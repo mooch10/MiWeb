@@ -133,17 +133,20 @@
       <div class="bg-brand-surface/90 backdrop-blur-2xl border border-white/10 rounded-2xl p-2 sm:px-5 sm:py-2.5 flex items-center justify-between shadow-[0_20px_50px_rgba(0,0,0,0.6)]">
         
         <!-- Brand Logo -->
-        <a href="index.html" class="flex items-center gap-2.5 sm:gap-3 group">
-          <div class="relative w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-br from-brand-surfaceElevated to-brand-surface border border-white/15 flex items-center justify-center font-mono font-bold text-white text-xs sm:text-sm shadow-inner group-hover:border-brand-cyan/50 transition-colors">
+        <a href="index.html" class="flex items-center gap-2.5 sm:gap-3 group shrink-0">
+          <div class="relative w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-br from-brand-surfaceElevated to-brand-surface border border-white/15 flex items-center justify-center font-mono font-bold text-white text-xs sm:text-sm shadow-inner group-hover:border-brand-cyan/50 transition-colors shrink-0">
             <span class="text-brand-cyan">A</span>G
             <span class="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 bg-brand-emerald border-2 border-brand-surface rounded-full"></span>
           </div>
-          <div>
-            <div class="flex items-center gap-2 sm:gap-2.5">
-              <span class="font-bold text-white text-xs sm:text-sm tracking-tight font-display">Andrés Gómez Pietrobono</span>
-              <span class="px-2.5 py-0.5 rounded-full bg-gradient-to-r from-brand-cyan/20 to-brand-indigo/20 border border-brand-cyan/40 text-[9px] sm:text-[10px] font-mono text-brand-cyan font-bold tracking-widest shadow-[0_0_12px_rgba(0,240,255,0.2)]">STUDIO</span>
+          <div class="flex flex-col justify-center">
+            <div class="flex items-center gap-2">
+              <span class="font-bold text-white text-xs sm:text-sm tracking-tight font-display whitespace-nowrap">Andrés Gómez <span class="hidden sm:inline">Pietrobono</span></span>
+              <span class="px-2 py-0.5 rounded-full bg-gradient-to-r from-brand-cyan/20 to-brand-indigo/20 border border-brand-cyan/40 text-[9px] font-mono text-brand-cyan font-bold tracking-wider shadow-[0_0_12px_rgba(0,240,255,0.2)]">STUDIO</span>
             </div>
-            <span class="text-[10px] sm:text-[11px] font-mono text-stone-400 block mt-1">Frontend Engineering</span>
+            <div class="flex items-center gap-1 text-[10px] sm:text-[11px] font-mono text-stone-400 leading-none mt-1">
+              <span class="sm:hidden font-medium text-stone-300">Pietrobono • </span>
+              <span>Frontend Engineering</span>
+            </div>
           </div>
         </a>
 
