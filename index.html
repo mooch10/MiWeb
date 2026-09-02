@@ -935,31 +935,31 @@
             </div>
           </div>
 
-          <!-- Dynamic Visual Metrics Matrix (Altura Estable y Fija) -->
-          <div class="grid grid-cols-2 gap-4 text-xs font-mono">
-            <div class="p-4 rounded-xl bg-brand-bg border border-white/5 relative overflow-hidden min-h-[90px] flex flex-col justify-between">
+          <!-- Dynamic Visual Metrics Matrix (Resistente a Mobile sin alterar Desktop) -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 text-xs font-mono">
+            <div class="p-3.5 sm:p-4 rounded-xl bg-brand-bg border border-white/5 relative overflow-hidden min-h-[95px] flex flex-col justify-between">
               <div id="speed-indicator-bar" class="absolute top-0 left-0 bottom-0 bg-brand-emerald/10 transition-all duration-75" style="width: 88%;"></div>
-              <span class="text-stone-400 block text-xs relative z-10">Tiempo de Carga:</span>
-              <div class="flex items-baseline justify-between relative z-10">
-                <span id="speed-metric" class="text-2xl font-bold font-mono text-brand-emerald">0.7s</span>
-                <span id="speed-status" class="text-[11px] text-stone-400 font-sans truncate ml-2">Instantánea</span>
+              <span class="text-stone-400 block text-xs relative z-10 font-sans">Tiempo de Carga:</span>
+              <div class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1 relative z-10 mt-1">
+                <span id="speed-metric" class="text-2xl font-bold font-mono text-brand-emerald leading-none">0.7s</span>
+                <span id="speed-status" class="text-[11px] text-stone-400 font-sans leading-tight">Instantánea (&lt;1s)</span>
               </div>
             </div>
 
-            <div class="p-4 rounded-xl bg-brand-bg border border-white/5 relative overflow-hidden min-h-[90px] flex flex-col justify-between">
+            <div class="p-3.5 sm:p-4 rounded-xl bg-brand-bg border border-white/5 relative overflow-hidden min-h-[95px] flex flex-col justify-between">
               <div id="conv-indicator-bar" class="absolute top-0 left-0 bottom-0 bg-brand-cyan/10 transition-all duration-75" style="width: 88%;"></div>
-              <span class="text-stone-400 block text-xs relative z-10">Retención de Visitas:</span>
-              <div class="flex items-baseline justify-between relative z-10">
-                <span id="conv-metric" class="text-2xl font-bold font-mono text-brand-cyan">94%</span>
-                <span id="conv-status" class="text-[11px] text-stone-400 font-sans truncate ml-2">Máxima conversión</span>
+              <span class="text-stone-400 block text-xs relative z-10 font-sans">Retención de Visitas:</span>
+              <div class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1 relative z-10 mt-1">
+                <span id="conv-metric" class="text-2xl font-bold font-mono text-brand-cyan leading-none">94%</span>
+                <span id="conv-status" class="text-[11px] text-stone-400 font-sans leading-tight">Máxima conversión</span>
               </div>
             </div>
           </div>
 
           <!-- Real-Time Comparison Info Banner -->
-          <div class="p-3.5 rounded-xl bg-brand-bg border border-white/5 flex items-center justify-between text-xs font-mono">
+          <div class="p-3.5 rounded-xl bg-brand-bg border border-white/5 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs font-mono">
             <div class="flex items-center gap-2 text-stone-400">
-              <i class="fa-solid fa-gauge-high text-brand-cyan"></i>
+              <i class="fa-solid fa-gauge-high text-brand-cyan shrink-0"></i>
               <span>Peso de la Web: <strong id="weight-metric" class="text-white font-mono">95 KB</strong></span>
             </div>
             <span id="seo-rank-impact" class="text-brand-emerald font-semibold text-[11px]">Prioridad Top 1 en Google Móvil</span>
