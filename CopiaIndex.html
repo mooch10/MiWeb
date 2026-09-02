@@ -1,0 +1,1791 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Andrés Gómez — Studio de Ingeniería Frontend & Diseño Web</title>
+  <meta name="description" content="Diseño y desarrollo web a medida con rendimiento extremo, arquitectura limpia y enfoque comercial directo. Sin plantillas genéricas." />
+
+  <!-- Google Fonts: Space Grotesk, Plus Jakarta Sans, JetBrains Mono, Syne -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet" />
+
+  <!-- FontAwesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Three.js CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              bg: '#05070B',
+              surface: '#0B0F17',
+              surfaceElevated: '#111723',
+              surfaceHover: '#182030',
+              border: 'rgba(255, 255, 255, 0.08)',
+              borderLight: 'rgba(255, 255, 255, 0.16)',
+              cyan: '#00F0FF',
+              emerald: '#10B981',
+              amber: '#F59E0B',
+              indigo: '#6366F1',
+              rose: '#F43F5E'
+            }
+          },
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'Inter', 'sans-serif'],
+            display: ['"Space Grotesk"', '"Plus Jakarta Sans"', 'sans-serif'],
+            syne: ['"Syne"', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace']
+          }
+        }
+      }
+    };
+  </script>
+
+  <style>
+    :root {
+      --cyan-glow: rgba(0, 240, 255, 0.18);
+      --indigo-glow: rgba(99, 102, 241, 0.15);
+    }
+
+    body {
+      background-color: #05070B;
+      background-image: 
+        radial-gradient(at 15% 15%, rgba(14, 28, 48, 0.6) 0px, transparent 50%),
+        radial-gradient(at 85% 25%, rgba(17, 24, 46, 0.5) 0px, transparent 55%),
+        radial-gradient(at 50% 75%, rgba(10, 20, 36, 0.7) 0px, transparent 65%),
+        radial-gradient(at 80% 85%, rgba(6, 30, 40, 0.4) 0px, transparent 50%);
+      background-attachment: fixed;
+      color: #E2E8F0;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      overflow-x: hidden;
+      letter-spacing: -0.015em;
+    }
+
+    h1, h2, h3, h4 {
+      font-family: 'Space Grotesk', 'Plus Jakarta Sans', sans-serif;
+      text-wrap: balance;
+      letter-spacing: -0.03em;
+    }
+
+    p, li, span.leading-relaxed {
+      text-wrap: pretty;
+    }
+
+    /* Subtle geometric grid across entire page */
+    .bg-grid-pattern {
+      background-size: 44px 44px;
+      background-image: 
+        linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+    }
+
+    /* Ambient noise & illumination */
+    .ambient-glow {
+      background: radial-gradient(circle 800px at 50% -10%, rgba(0, 240, 255, 0.07), transparent 75%);
+    }
+
+    /* Spotlight Card Effect with refined deep dark styling */
+    .spotlight-card {
+      position: relative;
+      background: #0B0F17;
+      background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.025) 0%, rgba(255, 255, 255, 0) 100%);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.7);
+      transition: border-color 0.25s cubic-bezier(0.16, 1, 0.3, 1), transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease;
+    }
+    .spotlight-card::before {
+      content: '';
+      position: absolute;
+      top: var(--mouse-y, 0);
+      left: var(--mouse-x, 0);
+      transform: translate(-50%, -50%);
+      width: 420px;
+      height: 420px;
+      background: radial-gradient(circle, rgba(0, 240, 255, 0.12) 0%, rgba(99, 102, 241, 0.04) 45%, transparent 70%);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      pointer-events: none;
+      z-index: 1;
+    }
+    .spotlight-card:hover::before {
+      opacity: 1;
+    }
+    .spotlight-card:hover {
+      border-color: rgba(0, 240, 255, 0.3);
+      box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.8), 0 0 25px -5px rgba(0, 240, 255, 0.1);
+    }
+
+    /* Tactile micro-interactions (Spring physics) */
+    .btn-spring {
+      transition: transform 0.12s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.15s ease, background-color 0.15s ease;
+    }
+    .btn-spring:active {
+      transform: scale(0.97);
+    }
+
+    /* Secondary subpanels */
+    .studio-subpanel {
+      background: #141824;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 14px;
+      transition: border-color 0.2s ease, background-color 0.2s ease;
+    }
+    .studio-subpanel:hover {
+      border-color: rgba(255, 255, 255, 0.14);
+    }
+
+    /* Modern CTA Action Buttons */
+    .btn-primary {
+      background: linear-gradient(135deg, #00F0FF 0%, #00B4D8 100%);
+      color: #08090D;
+      font-weight: 700;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0, 240, 255, 0.25);
+    }
+    .btn-primary:hover {
+      background: linear-gradient(135deg, #38F8FF 0%, #00C8F0 100%);
+      box-shadow: 0 8px 30px rgba(0, 240, 255, 0.45);
+      transform: translateY(-1px);
+    }
+
+    .btn-whatsapp {
+      background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+      color: #FFFFFF;
+      font-weight: 700;
+      border-radius: 12px;
+      box-shadow: 0 4px 16px rgba(16, 185, 129, 0.25);
+    }
+    .btn-whatsapp:hover {
+      background: linear-gradient(135deg, #34D399 0%, #10B981 100%);
+      box-shadow: 0 8px 25px rgba(16, 185, 129, 0.4);
+    }
+
+    /* Interactive Comparison Slider */
+    .comparison-container {
+      position: relative;
+      overflow: hidden;
+      border-radius: 16px;
+      user-select: none;
+    }
+    .comparison-after {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      width: 50%;
+      overflow: hidden;
+      border-right: 2px solid #00F0FF;
+      box-shadow: 2px 0 15px rgba(0, 240, 255, 0.4);
+    }
+
+    /* FAQ accordion animation */
+    .faq-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease;
+      opacity: 0;
+    }
+    .faq-item.active .faq-content {
+      max-height: 250px;
+      opacity: 1;
+    }
+    .faq-item.active .faq-icon {
+      transform: rotate(180deg);
+      color: #00F0FF;
+    }
+
+    /* Custom range thumb */
+    input[type="range"] {
+      -webkit-appearance: none;
+      background: rgba(255,255,255,0.08);
+      height: 6px;
+      border-radius: 3px;
+      outline: none;
+    }
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: #00F0FF;
+      cursor: pointer;
+      box-shadow: 0 0 14px rgba(0, 240, 255, 0.8);
+      transition: transform 0.1s ease;
+    }
+    input[type="range"]::-webkit-slider-thumb:hover {
+      transform: scale(1.2);
+    }
+
+    /* Glass tag */
+    .glass-badge {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      backdrop-blur: 12px;
+    }
+
+    /* Navbar animated gradient aura & border */
+    .nav-glow-wrapper {
+      position: relative;
+    }
+    .nav-glow-wrapper::before {
+      content: '';
+      position: absolute;
+      inset: -1px;
+      border-radius: 18px;
+      padding: 1px;
+      background: linear-gradient(90deg, rgba(0, 240, 255, 0.6), rgba(99, 102, 241, 0.3), rgba(16, 185, 129, 0.4), rgba(0, 240, 255, 0.6));
+      background-size: 300% 300%;
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      animation: navBorderFlow 8s ease infinite;
+      pointer-events: none;
+    }
+    @keyframes navBorderFlow {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* Floating Code Widgets (Fixed Ambient HUD Parallax) */
+    .ambient-code-widgets {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 2;
+      overflow: hidden;
+    }
+
+    .code-floating-card {
+      position: absolute;
+      background: rgba(11, 15, 23, 0.75);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-radius: 12px;
+      padding: 14px 18px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      line-height: 1.55;
+      color: #CBD5E1;
+      box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.8), 0 0 20px rgba(0, 240, 255, 0.08);
+      opacity: 0.45;
+      will-change: transform;
+      user-select: none;
+      transition: border-color 0.2s ease, opacity 0.2s ease;
+    }
+
+    /* Responsive Device Mockup Switcher */
+    .device-screen-wrapper {
+      transition: max-width 0.4s cubic-bezier(0.16, 1, 0.3, 1), transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+  </style>
+</head>
+<body class="bg-grid-pattern selection:bg-brand-cyan selection:text-black min-h-screen">
+
+  <!-- Ambient Multilayer Lights / Deep Void Glows (Fixed Dark Space) -->
+  <div class="fixed -top-40 left-1/2 -translate-x-1/2 w-[1000px] h-[600px] bg-brand-cyan/10 rounded-full blur-[160px] pointer-events-none z-0"></div>
+  <div class="fixed top-1/3 -left-40 w-[600px] h-[600px] bg-brand-indigo/10 rounded-full blur-[180px] pointer-events-none z-0"></div>
+  <div class="fixed bottom-20 -right-20 w-[700px] h-[700px] bg-brand-cyan/8 rounded-full blur-[170px] pointer-events-none z-0"></div>
+  <div class="fixed bottom-0 left-1/4 w-[600px] h-[400px] bg-brand-emerald/5 rounded-full blur-[150px] pointer-events-none z-0"></div>
+
+  <!-- Ambient Programming Vignettes & Floating Code Cards (Scroll Reactivos y Nítidos) -->
+  <div class="ambient-code-widgets pointer-events-none fixed inset-0 z-0 overflow-hidden">
+    
+    <!-- Viñeta 1 (Hero / Lateral Derecho) -->
+    <div class="code-floating-card scroll-parallax hidden md:block w-64" data-speed="0.35" style="right: 2%;">
+      <div class="flex items-center gap-2 mb-2 pb-1.5 border-b border-white/10 text-[10px] text-stone-400">
+        <span class="w-2 h-2 rounded-full bg-brand-rose"></span>
+        <span class="w-2 h-2 rounded-full bg-brand-amber"></span>
+        <span class="w-2 h-2 rounded-full bg-brand-emerald"></span>
+        <span class="text-stone-300 font-bold ml-1">engine.config.ts</span>
+      </div>
+      <div><span class="text-brand-cyan">const</span> lighthouse = <span class="text-brand-amber">await</span> audit(url);</div>
+      <div><span class="text-brand-indigo">if</span> (lighthouse.score &gt;= <span class="text-brand-emerald">99</span>) {</div>
+      <div class="pl-3 text-brand-emerald">deployToEdgeServer();</div>
+      <div>}</div>
+    </div>
+
+    <!-- Viñeta 2 (Servicios / Lateral Izquierdo) -->
+    <div class="code-floating-card scroll-parallax hidden md:block w-64" data-speed="-0.32" style="left: 2%;">
+      <div class="flex items-center gap-2 mb-2 pb-1.5 border-b border-white/10 text-[10px] text-stone-400">
+        <span class="text-brand-cyan"><i class="fa-brands fa-react"></i></span>
+        <span class="text-stone-300 font-bold ml-1">useConversion.tsx</span>
+      </div>
+      <div><span class="text-brand-indigo">export const</span> <span class="text-brand-cyan">QuickCheckout</span> = () =&gt; {</div>
+      <div class="pl-3 text-stone-400">// Direct 1-tap WhatsApp Lead</div>
+      <div class="pl-3"><span class="text-brand-amber">return</span> &lt;<span class="text-brand-cyan">WhatsAppCTA</span> /&gt;;</div>
+      <div>};</div>
+    </div>
+
+    <!-- Viñeta 3 (Portfolio & Multi-Device / Lateral Derecho) -->
+    <div class="code-floating-card scroll-parallax hidden lg:block w-64" data-speed="0.4" style="right: 2%;">
+      <div class="flex items-center gap-2 mb-2 pb-1.5 border-b border-white/10 text-[10px] text-stone-400">
+        <span class="text-brand-emerald"><i class="fa-solid fa-cube"></i></span>
+        <span class="text-stone-300 font-bold ml-1">webgl.render.js</span>
+      </div>
+      <div><span class="text-brand-indigo">const</span> shader = <span class="text-brand-cyan">new</span> Three.Shader({</div>
+      <div class="pl-3">fps: <span class="text-brand-emerald">60</span>, touchEnabled: <span class="text-brand-cyan">true</span>,</div>
+      <div class="pl-3">antialias: <span class="text-brand-cyan">true</span>, memory: <span class="text-brand-amber">'14MB'</span></div>
+      <div>});</div>
+    </div>
+
+    <!-- Viñeta 4 (Benchmark & Cotizador / Lateral Izquierdo) -->
+    <div class="code-floating-card scroll-parallax hidden lg:block w-64" data-speed="-0.38" style="left: 2%;">
+      <div class="flex items-center gap-2 mb-2 pb-1.5 border-b border-white/10 text-[10px] text-stone-400">
+        <span class="text-brand-amber"><i class="fa-solid fa-bolt"></i></span>
+        <span class="text-stone-300 font-bold ml-1">performance.test.ts</span>
+      </div>
+      <div>expect(ttfb).toBeLessThan(<span class="text-brand-emerald">80</span>); <span class="text-stone-500">// ms</span></div>
+      <div>expect(bundleSize).toBe(<span class="text-brand-cyan">'95KB'</span>);</div>
+      <div class="text-brand-emerald">✔ Test passed in 12ms</div>
+    </div>
+
+  </div>
+
+  <!-- ==================== TOP NAVIGATION ==================== -->
+  <nav class="fixed top-4 inset-x-0 z-50 px-3 sm:px-8 max-w-6xl mx-auto">
+    <div class="nav-glow-wrapper rounded-2xl">
+      <div class="bg-brand-surface/90 backdrop-blur-2xl border border-white/10 rounded-2xl p-2 sm:px-5 sm:py-2.5 flex items-center justify-between shadow-[0_20px_50px_rgba(0,0,0,0.6)]">
+        
+        <!-- Brand Logo -->
+        <a href="#" class="flex items-center gap-2.5 sm:gap-3 group">
+          <div class="relative w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-br from-brand-surfaceElevated to-brand-surface border border-white/15 flex items-center justify-center font-mono font-bold text-white text-xs sm:text-sm shadow-inner group-hover:border-brand-cyan/50 transition-colors">
+            <span class="text-brand-cyan">A</span>G
+            <span class="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 bg-brand-emerald border-2 border-brand-surface rounded-full"></span>
+          </div>
+          <div>
+            <div class="flex items-center gap-1.5 sm:gap-2">
+              <span class="font-bold text-white text-xs sm:text-sm tracking-tight font-display">Andrés Gómez</span>
+              <span class="px-2 py-0.5 rounded-full bg-gradient-to-r from-brand-cyan/20 to-brand-indigo/20 border border-brand-cyan/40 text-[9px] sm:text-[10px] font-mono text-brand-cyan font-bold tracking-widest shadow-[0_0_12px_rgba(0,240,255,0.2)]">STUDIO</span>
+            </div>
+            <span class="text-[10px] sm:text-[11px] font-mono text-stone-400 block -mt-0.5">Frontend Engineering</span>
+          </div>
+        </a>
+
+        <!-- Desktop Links (Identical in PC) -->
+        <div class="hidden lg:flex items-center gap-1 p-1 bg-brand-bg/80 rounded-xl border border-white/5 text-xs font-medium text-stone-400">
+          <a href="#servicios" class="px-3 py-1.5 rounded-lg hover:text-white hover:bg-white/5 transition-all">Servicios</a>
+          <a href="#portfolio" class="px-3 py-1.5 rounded-lg hover:text-white hover:bg-white/5 transition-all">Proyectos</a>
+          <a href="#responsivo" class="px-3 py-1.5 rounded-lg hover:text-white hover:bg-white/5 transition-all">Multi-Device</a>
+          <a href="#comparador" class="px-3 py-1.5 rounded-lg hover:text-white hover:bg-white/5 transition-all">Benchmark</a>
+          <a href="#interactive-3d" class="px-3 py-1.5 rounded-lg hover:text-white hover:bg-white/5 transition-all">Lab 3D</a>
+          <a href="#calculadora" class="px-3 py-1.5 rounded-lg hover:text-white hover:bg-white/5 transition-all">Cotizador</a>
+          <a href="#roadmap" class="px-3 py-1.5 rounded-lg hover:text-white hover:bg-white/5 transition-all">Fases</a>
+          <a href="#faq" class="px-3 py-1.5 rounded-lg hover:text-white hover:bg-white/5 transition-all">FAQ</a>
+        </div>
+
+        <!-- Quick Action Buttons + Mobile Hamburger -->
+        <div class="flex items-center gap-2">
+          <a href="https://github.com/mooch10" target="_blank" rel="noopener noreferrer" class="hidden sm:flex items-center justify-center w-9 h-9 rounded-xl studio-subpanel text-stone-300 hover:text-white hover:border-white/20 transition-all btn-spring" title="Ver GitHub">
+            <i class="fa-brands fa-github text-sm"></i>
+          </a>
+          <a href="https://wa.me/5492284379986?text=Hola%20Andr%C3%A9s,%20quiero%20hacerte%20una%20consulta%20por%20un%20sitio%20web" 
+             target="_blank" 
+             rel="noopener noreferrer" 
+             class="btn-whatsapp btn-spring px-3.5 sm:px-4 py-2 text-xs flex items-center gap-1.5 sm:gap-2 font-semibold">
+            <i class="fa-brands fa-whatsapp text-sm"></i>
+            <span>Consultar</span>
+          </a>
+          <!-- Mobile Menu Trigger -->
+          <button type="button" id="mobile-menu-toggle" class="lg:hidden w-9 h-9 rounded-xl bg-brand-surfaceElevated border border-white/10 flex items-center justify-center text-stone-300 hover:text-white transition-colors" aria-label="Abrir Menú">
+            <i class="fa-solid fa-bars text-sm" id="menu-icon"></i>
+          </button>
+        </div>
+
+      </div>
+
+      <!-- Mobile Dropdown Menu Drawer -->
+      <div id="mobile-menu-drawer" class="hidden lg:hidden mt-2 p-4 rounded-2xl bg-brand-surface/95 backdrop-blur-2xl border border-white/10 shadow-2xl space-y-2 text-xs font-mono">
+        <a href="#servicios" class="mobile-nav-link block p-2.5 rounded-xl hover:bg-white/5 text-stone-300 hover:text-brand-cyan transition-colors">⚡ Servicios & Precios</a>
+        <a href="#portfolio" class="mobile-nav-link block p-2.5 rounded-xl hover:bg-white/5 text-stone-300 hover:text-brand-cyan transition-colors">💼 Proyectos & Demos</a>
+        <a href="#responsivo" class="mobile-nav-link block p-2.5 rounded-xl hover:bg-white/5 text-stone-300 hover:text-brand-cyan transition-colors">📱 Vista Multi-Device</a>
+        <a href="#comparador" class="mobile-nav-link block p-2.5 rounded-xl hover:bg-white/5 text-stone-300 hover:text-brand-cyan transition-colors">📊 Benchmark Velocidad</a>
+        <a href="#interactive-3d" class="mobile-nav-link block p-2.5 rounded-xl hover:bg-white/5 text-stone-300 hover:text-brand-cyan transition-colors">🧊 Lab 3D Interactivo</a>
+        <a href="#calculadora" class="mobile-nav-link block p-2.5 rounded-xl hover:bg-white/5 text-stone-300 hover:text-brand-cyan transition-colors">🧮 Calculadora de Costos</a>
+        <a href="#roadmap" class="mobile-nav-link block p-2.5 rounded-xl hover:bg-white/5 text-stone-300 hover:text-brand-cyan transition-colors">🗺️ Roadmap (4 Fases)</a>
+        <a href="#faq" class="mobile-nav-link block p-2.5 rounded-xl hover:bg-white/5 text-stone-300 hover:text-brand-cyan transition-colors">❓ Preguntas Frecuentes</a>
+      </div>
+
+    </div>
+  </nav>
+
+  <!-- ==================== MAIN CONTENT CONTAINER ==================== -->
+  <main class="relative z-10 pt-32 pb-24 space-y-28 max-w-6xl mx-auto px-4 sm:px-6">
+
+    <!-- ==================== 1. HERO SECTION (AUTHOR & CONVERSION) ==================== -->
+    <section class="pt-6 sm:pt-10">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+        
+        <!-- Main Column (Pitch de Alto Impacto) -->
+        <div class="lg:col-span-8 spotlight-card p-8 sm:p-12 flex flex-col justify-between relative">
+          <div class="relative z-10">
+            
+            <!-- Live Availability Badge -->
+            <div class="inline-flex items-center gap-2.5 px-3 py-1.5 rounded-full glass-badge text-xs font-mono text-stone-300 mb-6">
+              <span class="flex h-2 w-2 relative">
+                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-emerald opacity-75"></span>
+                <span class="relative inline-flex rounded-full h-2 w-2 bg-brand-emerald"></span>
+              </span>
+              <span>Disponibilidad inmediata para nuevos proyectos</span>
+            </div>
+
+            <!-- Main Headline -->
+            <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white leading-[1.08] mb-6 tracking-tight font-display">
+              Webs a medida con <br class="hidden sm:inline" /><span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-cyan via-white/90 to-brand-cyan whitespace-nowrap">personalidad propia.</span>
+            </h1>
+
+            <p class="text-stone-300 text-base sm:text-lg max-w-2xl leading-relaxed mb-8 font-normal">
+              Sin plantillas genéricas de WordPress ni constructores lentos. Creo código artesanal optimizado para celulares (<strong class="text-white font-semibold">&lt; 1s de carga</strong>) y conectado directo a tu WhatsApp y pasarela de cobro.
+            </p>
+
+            <!-- Quick Features Matrix -->
+            <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-8 text-xs font-mono text-stone-300">
+              <div class="p-3 studio-subpanel flex items-center gap-2.5">
+                <i class="fa-solid fa-gauge-high text-brand-cyan"></i>
+                <span>Score 98+ Google</span>
+              </div>
+              <div class="p-3 studio-subpanel flex items-center gap-2.5">
+                <i class="fa-solid fa-mobile-screen-button text-brand-emerald"></i>
+                <span>100% Mobile Ready</span>
+              </div>
+              <div class="p-3 studio-subpanel flex items-center gap-2.5 col-span-2 sm:col-span-1">
+                <i class="fa-solid fa-code-commit text-brand-amber"></i>
+                <span>Código 100% Tuyo</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Hero CTAs -->
+          <div class="relative z-10 flex flex-wrap items-center gap-4 pt-6 border-t border-white/5">
+            <a href="#calculadora" class="btn-primary btn-spring px-6 py-3.5 text-xs sm:text-sm flex items-center gap-2.5 shadow-lg">
+              <i class="fa-solid fa-calculator text-stone-900"></i>
+              <span>Calcular Presupuesto Online</span>
+            </a>
+            <a href="#portfolio" class="px-5 py-3.5 rounded-xl studio-subpanel text-stone-300 hover:text-white text-xs sm:text-sm font-medium transition-colors btn-spring flex items-center gap-2">
+              <i class="fa-solid fa-arrow-down text-brand-cyan text-xs"></i>
+              <span>Explorar Proyectos & Demos</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Right Column (Proof & Direct Contact) -->
+        <div class="lg:col-span-4 spotlight-card p-6 sm:p-8 flex flex-col justify-between bg-brand-surface/70">
+          <div class="relative z-10">
+            
+            <div class="flex items-center gap-4 mb-6 pb-6 border-b border-white/5">
+              <div class="relative w-14 h-14 rounded-2xl bg-gradient-to-br from-brand-surfaceElevated to-brand-surface border border-white/15 flex items-center justify-center font-mono font-bold text-white text-xl shadow-inner">
+                <span class="text-brand-cyan">A</span>G
+                <span class="absolute -top-1 -right-1 w-3.5 h-3.5 bg-brand-emerald border-2 border-brand-surface rounded-full"></span>
+              </div>
+              <div>
+                <h3 class="font-bold text-white text-base">Andrés Gómez</h3>
+                <p class="text-xs font-mono text-stone-400">Full-Stack & Frontend Lead</p>
+                <div class="flex items-center gap-1.5 mt-1 text-[11px] text-brand-emerald font-mono">
+                  <i class="fa-solid fa-location-dot text-[10px]"></i>
+                  <span>Argentina • Remoto Global</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Direct Contact List -->
+            <div class="space-y-2.5 text-xs font-mono mb-6">
+              <a href="https://wa.me/5492284379986" target="_blank" class="p-3 studio-subpanel flex items-center justify-between group hover:border-brand-emerald/40 transition-colors">
+                <span class="text-stone-400">WhatsApp:</span>
+                <span class="text-white group-hover:text-brand-emerald font-semibold flex items-center gap-1">
+                  +54 9 2284 379986
+                  <i class="fa-solid fa-arrow-up-right-from-square text-[9px] opacity-0 group-hover:opacity-100 transition-opacity"></i>
+                </span>
+              </a>
+              
+              <a href="mailto:andresgomez311563@gmail.com" class="p-3 studio-subpanel flex items-center justify-between group hover:border-white/20 transition-colors" title="Enviar correo">
+                <span class="text-stone-400 shrink-0">Email:</span>
+                <span class="text-white group-hover:text-brand-cyan font-medium text-xs font-mono select-all">andresgomez311563@gmail.com</span>
+              </a>
+
+              <a href="https://github.com/mooch10" target="_blank" rel="noopener noreferrer" class="p-3 studio-subpanel flex items-center justify-between group hover:border-brand-cyan/40 transition-colors">
+                <span class="text-stone-400">GitHub:</span>
+                <span class="text-brand-cyan font-medium flex items-center gap-1">
+                  github.com/mooch10
+                  <i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i>
+                </span>
+              </a>
+            </div>
+          </div>
+
+          <!-- Guarantee Chip -->
+          <div class="relative z-10 p-4 rounded-xl bg-brand-surfaceElevated border border-white/10 text-xs text-stone-300">
+            <div class="flex items-center gap-2 font-semibold text-white mb-1">
+              <i class="fa-solid fa-shield-halved text-brand-cyan"></i>
+              <span>Trato directo y sin demoras</span>
+            </div>
+            <p class="text-[11px] text-stone-400 font-mono leading-relaxed text-pretty">
+              Hablas directo con quien programa tu web, sin intermediarios ni ejecutivos de venta.
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ==================== 2. SERVICIOS (BENTO GRID CON MOCKUPS INTERACTIVOS) ==================== -->
+    <section id="servicios" class="space-y-8">
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-white/10 pb-6">
+        <div>
+          <span class="text-xs font-mono uppercase text-brand-cyan tracking-wider block mb-2 font-semibold">ARQUITECTURA DE SOLUCIONES</span>
+          <h2 class="text-3xl sm:text-4xl font-extrabold text-white">
+            Servicios a Medida con <span class="text-brand-cyan whitespace-nowrap">Precios Claros</span>
+          </h2>
+        </div>
+        <p class="text-stone-400 text-xs sm:text-sm max-w-md text-pretty">
+          Plazos de entrega reales, código limpio y costos transparentes. Haz clic en cualquier plan para cotizarlo en 1 segundo.
+        </p>
+      </div>
+
+      <!-- BENTO GRID -->
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+
+        <!-- Bento Card 1: Landing Page Comercial (Destacado 7 cols) -->
+        <div class="md:col-span-7 spotlight-card p-8 flex flex-col justify-between relative group border-brand-cyan/30">
+          <div class="relative z-10">
+            <div class="flex items-center justify-between mb-4">
+              <span class="text-xs font-mono text-brand-cyan bg-brand-cyan/10 px-3 py-1 rounded-md border border-brand-cyan/20 font-medium">Alta Conversión</span>
+              <span class="text-xs font-mono text-stone-400"><i class="fa-regular fa-clock mr-1"></i> 3–5 días</span>
+            </div>
+            <h3 class="text-2xl sm:text-3xl font-bold text-white mb-2 tracking-tight font-sans">Landing Page Comercial</h3>
+            <p class="text-xs sm:text-sm text-stone-300 mb-6 leading-relaxed text-pretty">
+              Estructura de 1 página ultra veloz diseñada específicamente para campañas de anuncios (Meta / Google Ads) y venta directa a WhatsApp.
+            </p>
+
+            <!-- Mini Lighthouse Visualizer -->
+            <div class="p-4 studio-subpanel mb-6 grid grid-cols-3 gap-2 text-center font-mono">
+              <div class="p-2 bg-brand-bg/60 rounded-lg">
+                <div class="text-lg font-bold text-brand-emerald">100</div>
+                <div class="text-[10px] text-stone-400">Performance</div>
+              </div>
+              <div class="p-2 bg-brand-bg/60 rounded-lg">
+                <div class="text-lg font-bold text-brand-cyan">&lt; 0.8s</div>
+                <div class="text-[10px] text-stone-400">Tiempo Carga</div>
+              </div>
+              <div class="p-2 bg-brand-bg/60 rounded-lg">
+                <div class="text-lg font-bold text-brand-amber">100%</div>
+                <div class="text-[10px] text-stone-400">SEO Score</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="relative z-10 pt-5 border-t border-white/5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div>
+              <span class="text-[11px] font-mono text-stone-400 uppercase block">Inversión Estimada:</span>
+              <span class="text-2xl font-bold font-mono text-white">$80 – $160 <span class="text-xs font-normal text-stone-400">USD</span></span>
+            </div>
+            <a href="https://wa.me/5492284379986?text=Hola%20Andr%C3%A9s,%20me%20interesa%20consultar%20por%20la%20*Landing%20Page%20Comercial*%20($80-$160%20USD)" 
+               target="_blank" 
+               class="btn-whatsapp btn-spring px-5 py-2.5 text-xs flex items-center justify-center gap-2">
+              <i class="fa-brands fa-whatsapp text-sm"></i>
+              <span>Consultar Landing</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Bento Card 2: Web Corporativa (5 cols) -->
+        <div class="md:col-span-5 spotlight-card p-8 flex flex-col justify-between relative border-indigo-500/30">
+          <div class="relative z-10">
+            <div class="flex items-center justify-between mb-4">
+              <span class="text-xs font-mono text-brand-indigo bg-brand-indigo/10 px-3 py-1 rounded-md border border-brand-indigo/20 font-medium">Autoridad de Marca</span>
+              <span class="text-xs font-mono text-stone-400"><i class="fa-regular fa-clock mr-1"></i> 7–12 días</span>
+            </div>
+            <h3 class="text-xl sm:text-2xl font-bold text-white mb-2 tracking-tight">Web Corporativa Multi-Página</h3>
+            <p class="text-xs text-stone-300 mb-6 leading-relaxed text-pretty">
+              4 a 6 secciones completas para empresas, clínicas y consultores que necesitan transmitir máxima confianza y posicionar en Google con SEO.
+            </p>
+
+            <ul class="space-y-2.5 text-xs font-mono text-stone-300 mb-6">
+              <li class="flex items-center gap-2"><i class="fa-solid fa-check text-brand-indigo"></i> Arquitectura multi-sección modular</li>
+              <li class="flex items-center gap-2"><i class="fa-solid fa-check text-brand-indigo"></i> Formularios dinámicos y mapas</li>
+              <li class="flex items-center gap-2"><i class="fa-solid fa-check text-brand-indigo"></i> Indexación técnica en Google</li>
+            </ul>
+          </div>
+
+          <div class="relative z-10 pt-5 border-t border-white/5 flex items-center justify-between">
+            <div>
+              <span class="text-[11px] font-mono text-stone-400 uppercase block">Inversión:</span>
+              <span class="text-xl font-bold font-mono text-white">$180 – $350 <span class="text-xs font-normal text-stone-400">USD</span></span>
+            </div>
+            <a href="https://wa.me/5492284379986?text=Hola%20Andr%C3%A9s,%20quisiera%20pedir%20presupuesto%20para%20un%20*Sitio%20Web%20Corporativo*%20($180-$350%20USD)" 
+               target="_blank" 
+               class="p-2.5 px-4 rounded-xl studio-subpanel text-white hover:text-brand-indigo hover:border-brand-indigo/40 text-xs font-medium transition-all btn-spring flex items-center gap-2">
+              <i class="fa-brands fa-whatsapp text-brand-emerald"></i>
+              <span>Consultar</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Bento Card 3: E-Commerce & Catálogos (4 cols) -->
+        <div class="md:col-span-4 spotlight-card p-7 flex flex-col justify-between border-amber-500/20">
+          <div class="relative z-10">
+            <div class="flex items-center justify-between mb-4">
+              <span class="text-xs font-mono text-brand-amber bg-brand-amber/10 px-2.5 py-1 rounded-md border border-brand-amber/20 font-medium">Ventas Online</span>
+              <span class="text-xs font-mono text-stone-400">10–18 días</span>
+            </div>
+            <h3 class="text-xl font-bold text-white mb-2">E-Commerce & Catálogo</h3>
+            <p class="text-xs text-stone-400 mb-4 leading-relaxed text-pretty">
+              Catálogo de productos con cobro automático por Mercado Pago / tarjetas o pedidos directos con carrito a WhatsApp.
+            </p>
+            <ul class="space-y-2 text-xs font-mono text-stone-300 mb-6">
+              <li class="flex items-center gap-2"><i class="fa-solid fa-angle-right text-brand-amber"></i> Filtros y variantes de stock</li>
+              <li class="flex items-center gap-2"><i class="fa-solid fa-angle-right text-brand-amber"></i> Panel de gestión autoadministrable</li>
+            </ul>
+          </div>
+
+          <div class="relative z-10 pt-5 border-t border-white/5 space-y-3">
+            <div class="flex items-baseline justify-between">
+              <span class="text-[11px] font-mono text-stone-400 uppercase">Inversión:</span>
+              <span class="text-lg font-bold font-mono text-white">$290 – $550 <span class="text-xs font-normal text-stone-400">USD</span></span>
+            </div>
+            <a href="https://wa.me/5492284379986?text=Hola%20Andr%C3%A9s,%20deseo%20cotizar%20un%20*E-Commerce%20/%20Cat%C3%A1logo*%20($290-$550%20USD)" 
+               target="_blank" 
+               class="w-full py-2.5 px-4 studio-subpanel text-white hover:text-brand-amber text-xs font-medium flex items-center justify-center gap-2 btn-spring">
+              <i class="fa-brands fa-whatsapp text-brand-emerald"></i>
+              <span>Cotizar Tienda</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Bento Card 4: Sitios 3D Inmersivos (4 cols) -->
+        <div class="md:col-span-4 spotlight-card p-7 flex flex-col justify-between border-brand-cyan/40 bg-gradient-to-b from-brand-surface to-[#0d1624]">
+          <div class="relative z-10">
+            <div class="flex items-center justify-between mb-4">
+              <span class="text-xs font-mono text-brand-cyan bg-brand-cyan/10 px-2.5 py-1 rounded-md border border-brand-cyan/20 font-medium">Flagship 3D</span>
+              <span class="text-xs font-mono text-stone-400">12–20 días</span>
+            </div>
+            <h3 class="text-xl font-bold text-white mb-2">Webs Inmersivas 3D</h3>
+            <p class="text-xs text-stone-300 mb-4 leading-relaxed text-pretty">
+              Modelos interactivos en 360° con Three.js o Spline. Diseñado para marcas que necesitan un diferencial estético inolvidable.
+            </p>
+            <ul class="space-y-2 text-xs font-mono text-stone-300 mb-6">
+              <li class="flex items-center gap-2"><i class="fa-solid fa-cube text-brand-cyan"></i> Visualizadores de producto 3D</li>
+              <li class="flex items-center gap-2"><i class="fa-solid fa-cube text-brand-cyan"></i> WebGL ultra liviano para celulares</li>
+            </ul>
+          </div>
+
+          <div class="relative z-10 pt-5 border-t border-white/5 space-y-3">
+            <div class="flex items-baseline justify-between">
+              <span class="text-[11px] font-mono text-stone-400 uppercase">Inversión:</span>
+              <span class="text-lg font-bold font-mono text-white">$380 – $750 <span class="text-xs font-normal text-stone-400">USD</span></span>
+            </div>
+            <a href="https://wa.me/5492284379986?text=Hola%20Andr%C3%A9s,%20quiero%20cotizar%20un%20proyecto%20con%20*Experiencias%203D%20/%20Spline*%20($380-$750%20USD)" 
+               target="_blank" 
+               class="w-full py-2.5 px-4 studio-subpanel text-white hover:text-brand-cyan text-xs font-medium flex items-center justify-center gap-2 btn-spring">
+              <i class="fa-brands fa-whatsapp text-brand-emerald"></i>
+              <span>Cotizar 3D</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Bento Card 5: Rediseño & Mantenimiento (4 cols) -->
+        <div class="md:col-span-4 spotlight-card p-7 flex flex-col justify-between border-emerald-500/25">
+          <div class="relative z-10">
+            <div class="flex items-center justify-between mb-4">
+              <span class="text-xs font-mono text-brand-emerald bg-brand-emerald/10 px-2.5 py-1 rounded-md border border-brand-emerald/20 font-medium">Optimización</span>
+              <span class="text-xs font-mono text-stone-400">Puntual/Mensual</span>
+            </div>
+            <h3 class="text-xl font-bold text-white mb-2">Rediseño & Soporte</h3>
+            <p class="text-xs text-stone-400 mb-4 leading-relaxed text-pretty">
+              Modernización visual de sitios desactualizados, corrección de lentitud, migración de hosting y soporte continuo.
+            </p>
+            <ul class="space-y-2 text-xs font-mono text-stone-300 mb-6">
+              <li class="flex items-center gap-2"><i class="fa-solid fa-bolt text-brand-emerald"></i> Aceleración de carga extrema</li>
+              <li class="flex items-center gap-2"><i class="fa-solid fa-bolt text-brand-emerald"></i> Backups y seguridad garantizada</li>
+            </ul>
+          </div>
+
+          <div class="relative z-10 pt-5 border-t border-white/5 space-y-3">
+            <div class="flex items-baseline justify-between">
+              <span class="text-[11px] font-mono text-stone-400 uppercase">Inversión:</span>
+              <span class="text-lg font-bold font-mono text-white">$60 – $140 <span class="text-xs font-normal text-stone-400">USD</span></span>
+            </div>
+            <a href="https://wa.me/5492284379986?text=Hola%20Andr%C3%A9s,%20necesito%20un%20*Redise%C3%B1o%20/%20Mantenimiento*%20para%20mi%20sitio%20actual%20($60-$140%20USD)" 
+               target="_blank" 
+               class="w-full py-2.5 px-4 studio-subpanel text-white hover:text-brand-emerald text-xs font-medium flex items-center justify-center gap-2 btn-spring">
+              <i class="fa-brands fa-whatsapp text-brand-emerald"></i>
+              <span>Consultar Soporte</span>
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ==================== 3. CASOS DE ESTUDIO & MOCKUPS VISUALES ==================== -->
+    <section id="portfolio" class="space-y-8">
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-white/10 pb-6">
+        <div>
+          <span class="text-xs font-mono uppercase text-brand-cyan tracking-wider block mb-2 font-semibold">TRABAJO DESTACADO</span>
+          <h2 class="text-3xl sm:text-4xl font-extrabold text-white">
+            Demos Funcionales & <span class="text-brand-cyan whitespace-nowrap">Casos Reales</span>
+          </h2>
+        </div>
+        <a href="https://github.com/mooch10" target="_blank" rel="noopener noreferrer" class="text-xs font-mono text-brand-cyan hover:underline flex items-center gap-1.5">
+          <span>Explorar todos los repositorios en GitHub</span>
+          <i class="fa-brands fa-github text-sm"></i>
+        </a>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        
+        <!-- Showcase Card 1: Mochiptos App -->
+        <div class="spotlight-card p-6 sm:p-8 flex flex-col justify-between group">
+          <div class="relative z-10">
+            <!-- Browser Mockup Header -->
+            <div class="rounded-t-xl bg-brand-surfaceElevated border border-white/10 p-3 flex items-center justify-between text-xs font-mono text-stone-400">
+              <div class="flex items-center gap-2">
+                <span class="w-3 h-3 rounded-full bg-brand-rose/80"></span>
+                <span class="w-3 h-3 rounded-full bg-brand-amber/80"></span>
+                <span class="w-3 h-3 rounded-full bg-brand-emerald/80"></span>
+              </div>
+              <span class="text-[11px] text-stone-400">https://mochiptos.vercel.app</span>
+              <span class="text-brand-emerald text-[10px]"><i class="fa-solid fa-lock text-[9px] mr-1"></i> SSL OK</span>
+            </div>
+
+            <!-- Visual Preview Area -->
+            <div class="p-6 bg-gradient-to-b from-brand-surfaceElevated/50 to-brand-surface border-x border-b border-white/10 rounded-b-xl mb-6 flex flex-col justify-center min-h-[160px] relative overflow-hidden">
+              <div class="absolute -right-8 -bottom-8 w-36 h-36 bg-brand-cyan/10 rounded-full blur-2xl pointer-events-none"></div>
+              <span class="text-xs font-mono text-brand-cyan mb-1">PROYECTO EN PRODUCCIÓN</span>
+              <h4 class="text-2xl font-bold text-white mb-2">Mochiptos Web Application</h4>
+              <p class="text-xs text-stone-400 leading-relaxed max-w-md">
+                Desarrollo desplegado en Vercel con arquitectura React modular, tiempos de respuesta instantáneos y UI adaptativa orientada al usuario.
+              </p>
+            </div>
+
+            <!-- Metrics tags -->
+            <div class="flex flex-wrap gap-2 text-[11px] font-mono text-stone-300 mb-6">
+              <span class="px-2.5 py-1 rounded-md studio-subpanel"><i class="fa-solid fa-bolt text-brand-emerald mr-1"></i> Carga: 0.6s</span>
+              <span class="px-2.5 py-1 rounded-md studio-subpanel"><i class="fa-brands fa-react text-brand-cyan mr-1"></i> React / Next</span>
+              <span class="px-2.5 py-1 rounded-md studio-subpanel"><i class="fa-solid fa-cloud text-brand-indigo mr-1"></i> Vercel Edge</span>
+            </div>
+          </div>
+
+          <div class="relative z-10 pt-4 border-t border-white/5 flex items-center justify-between">
+            <span class="text-xs font-mono text-brand-emerald flex items-center gap-1.5">
+              <span class="w-2 h-2 rounded-full bg-brand-emerald animate-pulse"></span>
+              Despliegue Activo
+            </span>
+            <a href="https://mochiptos.vercel.app" target="_blank" rel="noopener noreferrer" class="btn-primary btn-spring px-4 py-2 text-xs flex items-center gap-2">
+              <span>Abrir Sitio en Vivo</span>
+              <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+            </a>
+          </div>
+        </div>
+
+        <!-- Showcase Card 2: GitHub Architecture & Repos -->
+        <div class="spotlight-card p-6 sm:p-8 flex flex-col justify-between group">
+          <div class="relative z-10">
+            <!-- Terminal Header -->
+            <div class="rounded-t-xl bg-brand-surfaceElevated border border-white/10 p-3 flex items-center justify-between text-xs font-mono text-stone-400">
+              <div class="flex items-center gap-2">
+                <i class="fa-brands fa-github text-sm text-white"></i>
+                <span class="text-[11px] text-stone-300">github.com/mooch10</span>
+              </div>
+              <span class="text-brand-cyan text-[10px]">Source Code Hub</span>
+            </div>
+
+            <!-- Visual Preview Area -->
+            <div class="p-6 bg-gradient-to-b from-brand-surfaceElevated/50 to-brand-surface border-x border-b border-white/10 rounded-b-xl mb-6 flex flex-col justify-center min-h-[160px] relative overflow-hidden font-mono text-xs">
+              <div class="text-stone-400 mb-2">// Repositorios abiertos & componentes reutilizables</div>
+              <div class="text-brand-emerald">$ git log -1 --pretty=format:"%h - %s (%cr)"</div>
+              <div class="text-stone-300 mt-1">&gt; 7f8a91c - feat(ui): Spring physics & high-converting layouts (just now)</div>
+              <div class="text-stone-400 mt-3 text-[11px]">Diseño de algoritmos, interfaces accesibles y lógica frontend de nivel profesional.</div>
+            </div>
+
+            <!-- Tags -->
+            <div class="flex flex-wrap gap-2 text-[11px] font-mono text-stone-300 mb-6">
+              <span class="px-2.5 py-1 rounded-md studio-subpanel"><i class="fa-solid fa-code text-brand-cyan mr-1"></i> TypeScript & JS</span>
+              <span class="px-2.5 py-1 rounded-md studio-subpanel"><i class="fa-solid fa-cubes text-brand-amber mr-1"></i> WebGL / 3D</span>
+              <span class="px-2.5 py-1 rounded-md studio-subpanel"><i class="fa-solid fa-shield text-brand-emerald mr-1"></i> Clean Code</span>
+            </div>
+          </div>
+
+          <div class="relative z-10 pt-4 border-t border-white/5 flex items-center justify-between">
+            <span class="text-xs font-mono text-stone-400">Repositorios Públicos</span>
+            <a href="https://github.com/mooch10" target="_blank" rel="noopener noreferrer" class="p-2.5 px-4 rounded-xl studio-subpanel text-white hover:text-brand-cyan hover:border-brand-cyan/40 text-xs font-medium transition-all btn-spring flex items-center gap-2">
+              <i class="fa-brands fa-github text-sm"></i>
+              <span>Ver GitHub Profile</span>
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ==================== NUEVA VIÑETA RESPONSIVE (MOBILE, TABLET, DESKTOP) ==================== -->
+    <section id="responsivo" class="spotlight-card p-8 sm:p-12 border-brand-indigo/30">
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-white/10 pb-6 mb-8">
+        <div>
+          <span class="text-xs font-mono uppercase text-brand-indigo tracking-wider block mb-2 font-semibold">DISEÑO ADAPTATIVO RIGUROSO</span>
+          <h2 class="text-3xl sm:text-4xl font-extrabold text-white">
+            Adaptabilidad Fluida en <span class="text-brand-cyan whitespace-nowrap">Cualquier Pantalla</span>
+          </h2>
+        </div>
+        <p class="text-stone-400 text-xs sm:text-sm max-w-md text-pretty">
+          Prueba en tiempo real cómo tu página reconfigura su layout para ofrecer la experiencia de compra óptima en móviles, tablets y monitores gigantes.
+        </p>
+      </div>
+
+      <!-- Device Switcher Controls -->
+      <div class="flex flex-wrap items-center justify-center gap-3 mb-8">
+        <button type="button" class="device-btn active px-4 py-2.5 rounded-xl bg-brand-surfaceElevated border border-brand-cyan text-white text-xs font-mono flex items-center gap-2 btn-spring" data-device="desktop">
+          <i class="fa-solid fa-desktop text-brand-cyan"></i>
+          <span>Desktop (1440px)</span>
+        </button>
+        <button type="button" class="device-btn px-4 py-2.5 rounded-xl bg-brand-bg border border-white/5 text-stone-400 hover:text-white text-xs font-mono flex items-center gap-2 btn-spring" data-device="tablet">
+          <i class="fa-solid fa-tablet-screen-button"></i>
+          <span>Tablet (768px)</span>
+        </button>
+        <button type="button" class="device-btn px-4 py-2.5 rounded-xl bg-brand-bg border border-white/5 text-stone-400 hover:text-white text-xs font-mono flex items-center gap-2 btn-spring" data-device="mobile">
+          <i class="fa-solid fa-mobile-screen"></i>
+          <span>Mobile (375px)</span>
+        </button>
+      </div>
+
+      <!-- Dynamic Device Frame Simulation -->
+      <div class="w-full flex justify-center items-center py-4 bg-[#07090E]/80 rounded-2xl border border-white/5 overflow-hidden">
+        <div id="device-screen-container" class="device-screen-wrapper w-full max-w-[960px] bg-brand-surface rounded-xl border border-white/15 p-4 sm:p-6 shadow-2xl space-y-4">
+          
+          <!-- Mockup Top Bar -->
+          <div class="flex items-center justify-between pb-3 border-b border-white/10 text-[10px] font-mono text-stone-400">
+            <div class="flex items-center gap-1.5">
+              <span class="w-2.5 h-2.5 rounded-full bg-brand-rose"></span>
+              <span class="w-2.5 h-2.5 rounded-full bg-brand-amber"></span>
+              <span class="w-2.5 h-2.5 rounded-full bg-brand-emerald"></span>
+            </div>
+            <span id="device-url-display" class="bg-brand-bg px-3 py-0.5 rounded border border-white/5 text-stone-300 truncate max-w-[200px] sm:max-w-xs">https://tuempresa.com</span>
+            <span id="device-res-badge" class="text-brand-cyan">1440 × 900 px</span>
+          </div>
+
+          <!-- Mockup Inner Content Responsive Simulation -->
+          <div class="grid grid-cols-1 sm:grid-cols-12 gap-4 items-center">
+            <div class="sm:col-span-7 space-y-2">
+              <div class="inline-block px-2 py-0.5 rounded bg-brand-cyan/10 text-brand-cyan text-[10px] font-mono font-bold">100% Touch Optimized</div>
+              <h4 class="text-base sm:text-lg font-bold text-white leading-tight">Arquitectura fluida con tipografía elástica (Fluid Typography)</h4>
+              <p class="text-xs text-stone-400 leading-relaxed">Los botones se ajustan al pulgar en smartphones y se expanden con elegancia en monitores widescreen.</p>
+            </div>
+            <div class="sm:col-span-5 studio-subpanel p-3 text-center space-y-1.5 bg-brand-surfaceElevated/50">
+              <div class="text-xl font-bold font-mono text-brand-emerald">99.8%</div>
+              <div class="text-[10px] font-mono text-stone-400">Compatibilidad Móvil (Lighthouse)</div>
+              <div class="w-full bg-white/10 h-1.5 rounded-full overflow-hidden">
+                <div class="bg-brand-emerald h-full w-[99%]"></div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== 4. BENCHMARK COMPARADOR INTERACTIVO (ENRIQUECIDO) ==================== -->
+    <section id="comparador" class="spotlight-card p-8 sm:p-12 border-brand-cyan/20">
+      <div class="max-w-3xl mb-8 relative z-10">
+        <span class="text-xs font-mono uppercase text-brand-cyan tracking-wider block mb-2 font-semibold">BENCHMARK DE RENDIMIENTO & CONVERSIÓN</span>
+        <h2 class="text-3xl font-bold text-white mb-2">
+          Plantilla Estándar vs. <span class="text-brand-cyan whitespace-nowrap">Desarrollo a Medida</span>
+        </h2>
+        <p class="text-stone-400 text-xs sm:text-sm text-pretty">
+          Desliza el controlador para observar en tiempo real la correlación directa entre velocidad de carga, peso de la web y retención de clientes.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center relative z-10">
+        
+        <!-- Interactive Benchmark Controller -->
+        <div class="lg:col-span-7 studio-subpanel p-6 sm:p-7 space-y-6">
+          <div class="flex items-center justify-between text-xs font-mono">
+            <span class="text-stone-400 flex items-center gap-1.5"><i class="fa-solid fa-gauge text-stone-500"></i> Plantilla Lenta (WP/Wix)</span>
+            <span class="text-brand-cyan font-bold flex items-center gap-1.5"><i class="fa-solid fa-bolt text-brand-cyan"></i> Código Ultra-Fast</span>
+          </div>
+
+          <!-- Range Slider with reactive continuous feedback -->
+          <div class="space-y-2">
+            <input type="range" id="comparison-slider" min="0" max="100" value="88" class="w-full cursor-pointer" />
+            <div class="flex justify-between text-[10px] font-mono text-stone-400">
+              <span>0% (Sin optimización)</span>
+              <span id="slider-level-text" class="text-brand-cyan font-semibold">Nivel de optimización: 88%</span>
+              <span>100% (Edge Studio)</span>
+            </div>
+          </div>
+
+          <!-- Dynamic Visual Metrics Matrix (Altura Estable y Fija) -->
+          <div class="grid grid-cols-2 gap-4 text-xs font-mono">
+            <div class="p-4 rounded-xl bg-brand-bg border border-white/5 relative overflow-hidden min-h-[90px] flex flex-col justify-between">
+              <div id="speed-indicator-bar" class="absolute top-0 left-0 bottom-0 bg-brand-emerald/10 transition-all duration-75" style="width: 88%;"></div>
+              <span class="text-stone-400 block text-xs relative z-10">Tiempo de Carga:</span>
+              <div class="flex items-baseline justify-between relative z-10">
+                <span id="speed-metric" class="text-2xl font-bold font-mono text-brand-emerald">0.7s</span>
+                <span id="speed-status" class="text-[11px] text-stone-400 font-sans truncate ml-2">Instantánea</span>
+              </div>
+            </div>
+
+            <div class="p-4 rounded-xl bg-brand-bg border border-white/5 relative overflow-hidden min-h-[90px] flex flex-col justify-between">
+              <div id="conv-indicator-bar" class="absolute top-0 left-0 bottom-0 bg-brand-cyan/10 transition-all duration-75" style="width: 88%;"></div>
+              <span class="text-stone-400 block text-xs relative z-10">Retención de Visitas:</span>
+              <div class="flex items-baseline justify-between relative z-10">
+                <span id="conv-metric" class="text-2xl font-bold font-mono text-brand-cyan">94%</span>
+                <span id="conv-status" class="text-[11px] text-stone-400 font-sans truncate ml-2">Máxima conversión</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Real-Time Comparison Info Banner -->
+          <div class="p-3.5 rounded-xl bg-brand-bg border border-white/5 flex items-center justify-between text-xs font-mono">
+            <div class="flex items-center gap-2 text-stone-400">
+              <i class="fa-solid fa-gauge-high text-brand-cyan"></i>
+              <span>Peso de la Web: <strong id="weight-metric" class="text-white font-mono">95 KB</strong></span>
+            </div>
+            <span id="seo-rank-impact" class="text-brand-emerald font-semibold text-[11px]">Prioridad Top 1 en Google Móvil</span>
+          </div>
+        </div>
+
+        <!-- Comparative Points -->
+        <div class="lg:col-span-5 space-y-3 text-xs font-mono text-stone-300">
+          <div class="p-3.5 studio-subpanel flex items-start gap-3">
+            <i class="fa-solid fa-bolt text-brand-cyan mt-1 text-sm"></i>
+            <div>
+              <strong class="text-white block font-sans text-sm">Cero Librerías Basura</strong>
+              <span class="text-stone-400">Bundle limpio sin los 40 plugins pesados que ralentizan los constructores visuales.</span>
+            </div>
+          </div>
+          <div class="p-3.5 studio-subpanel flex items-start gap-3">
+            <i class="fa-solid fa-mobile-screen text-brand-emerald mt-1 text-sm"></i>
+            <div>
+              <strong class="text-white block font-sans text-sm">Nativo para Pantallas Táctiles</strong>
+              <span class="text-stone-400">El 85% de tus clientes entra por celular; todo está calculado para comprar con el pulgar.</span>
+            </div>
+          </div>
+          <div class="p-3.5 studio-subpanel flex items-start gap-3">
+            <i class="fa-solid fa-key text-brand-amber mt-1 text-sm"></i>
+            <div>
+              <strong class="text-white block font-sans text-sm">Independencia Total</strong>
+              <span class="text-stone-400">Código propio. Sin mensualidades de plataformas ni ataduras a terceros.</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ==================== 5. 3D INTERACTIVE LAB (SPLINE & THREE.JS) ==================== -->
+    <section id="interactive-3d" class="spotlight-card p-8 sm:p-12 border-brand-cyan/25">
+      <div class="flex flex-col lg:flex-row gap-8 items-center">
+        
+        <div class="lg:w-1/2 space-y-6 relative z-10">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-brand-cyan/10 border border-brand-cyan/20 text-xs font-mono text-brand-cyan">
+            <i class="fa-solid fa-cube"></i>
+            <span>LAB 3D INTERACTIVO (WEBGL ENGINE)</span>
+          </div>
+
+          <h2 class="text-3xl font-extrabold text-white leading-tight">
+            Experiencias 3D interactivas para <span class="text-brand-cyan">exhibir productos</span> con identidad propia.
+          </h2>
+
+          <p class="text-stone-300 text-sm leading-relaxed">
+            Arrastra con el cursor sobre la figura 3D. Integrar elementos visuales manipulables eleva el <strong class="text-white font-medium">tiempo de permanencia</strong> y hace que tu propuesta sea inolvidable frente a la competencia.
+          </p>
+
+          <div class="space-y-3 pt-2">
+            <div class="text-xs font-mono text-stone-400">Cambiar Geometría en Vivo:</div>
+            <div class="flex flex-wrap gap-2 text-xs font-mono">
+              <button type="button" class="geo-btn active px-4 py-2 rounded-xl bg-brand-surfaceElevated text-white border border-brand-cyan btn-spring" data-geo="torus">
+                Toroide Neón
+              </button>
+              <button type="button" class="geo-btn px-4 py-2 rounded-xl bg-brand-bg text-stone-400 border border-white/5 hover:text-white btn-spring" data-geo="cube">
+                Cubo Cuántico
+              </button>
+              <button type="button" class="geo-btn px-4 py-2 rounded-xl bg-brand-bg text-stone-400 border border-white/5 hover:text-white btn-spring" data-geo="sphere">
+                Esfera Icosaedro
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="lg:w-1/2 w-full h-80 rounded-2xl bg-brand-bg/90 border border-white/10 relative overflow-hidden flex items-center justify-center cursor-grab active:cursor-grabbing shadow-inner">
+          <div id="product-3d-canvas" class="w-full h-full"></div>
+          <span class="absolute bottom-3 right-3 text-[10px] font-mono text-stone-400 bg-brand-surface/90 px-3 py-1 rounded-md border border-white/10 pointer-events-none">
+            <i class="fa-solid fa-hand-pointer mr-1.5 text-brand-cyan"></i> Arrastra para rotar en 360°
+          </span>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ==================== 6. CALCULADORA INTERACTIVA DE PRESUPUESTO ==================== -->
+    <section id="calculadora" class="spotlight-card p-8 sm:p-12 border-brand-cyan/20 relative">
+      <div class="max-w-3xl mb-8 relative z-10">
+        <span class="text-xs font-mono uppercase text-brand-cyan tracking-wider block mb-2 font-semibold">COTIZADOR TRANSPARENTE</span>
+        <h2 class="text-3xl font-extrabold text-white mb-2">
+          Calculadora de Alcance & <span class="text-brand-cyan">Presupuesto en Vivo</span>
+        </h2>
+        <p class="text-stone-400 text-xs sm:text-sm">
+          Selecciona lo que tu negocio necesita y obtén un estimado instantáneo con el mensaje listo para enviar por WhatsApp.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 relative z-10">
+        
+        <div class="lg:col-span-7 space-y-6">
+          <div>
+            <label class="text-xs font-mono text-stone-300 uppercase tracking-wider block mb-2 font-semibold">1. Tipo de Proyecto Base:</label>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 text-xs font-mono">
+              <button type="button" class="scope-btn active p-3.5 studio-subpanel text-left font-medium border-brand-cyan text-white btn-spring" data-base="90" data-name="Landing Page" data-min-days="3" data-max-days="5">
+                <div class="font-bold text-sm text-white">Landing Page</div>
+                <div class="text-stone-400 text-[11px]">$90 USD • 3-5d</div>
+              </button>
+              <button type="button" class="scope-btn p-3.5 studio-subpanel text-left font-medium text-stone-400 btn-spring" data-base="220" data-name="Web Corporativa" data-min-days="7" data-max-days="12">
+                <div class="font-bold text-sm text-white">Corporativa</div>
+                <div class="text-stone-400 text-[11px]">$220 USD • 7-12d</div>
+              </button>
+              <button type="button" class="scope-btn p-3.5 studio-subpanel text-left font-medium text-stone-400 btn-spring" data-base="380" data-name="E-Commerce" data-min-days="10" data-max-days="18">
+                <div class="font-bold text-sm text-white">E-Commerce</div>
+                <div class="text-stone-400 text-[11px]">$380 USD • 10-18d</div>
+              </button>
+            </div>
+          </div>
+
+          <div>
+            <label class="text-xs font-mono text-stone-300 uppercase tracking-wider block mb-2 font-semibold">2. Funcionalidades Extra Opcionales:</label>
+            <div class="space-y-2 text-xs font-mono">
+              <label class="flex items-center justify-between p-3.5 studio-subpanel cursor-pointer hover:border-white/20 transition-colors">
+                <span class="flex items-center gap-3 text-stone-200">
+                  <input type="checkbox" class="feature-checkbox w-4 h-4 rounded accent-brand-cyan" data-cost="180" data-days="4" data-feature="Interacciones 3D / Spline" />
+                  Experiencia 3D / Spline Interactivo
+                </span>
+                <span class="text-brand-cyan font-bold">+$180 USD <span class="text-[10px] text-stone-400 font-normal">(+4 días)</span></span>
+              </label>
+              <label class="flex items-center justify-between p-3.5 studio-subpanel cursor-pointer hover:border-white/20 transition-colors">
+                <span class="flex items-center gap-3 text-stone-200">
+                  <input type="checkbox" class="feature-checkbox w-4 h-4 rounded accent-brand-cyan" data-cost="50" data-days="2" data-feature="Pasarela de Pagos (Mercado Pago)" />
+                  Pasarela de Cobro Online (Mercado Pago)
+                </span>
+                <span class="text-brand-cyan font-bold">+$50 USD <span class="text-[10px] text-stone-400 font-normal">(+2 días)</span></span>
+              </label>
+              <label class="flex items-center justify-between p-3.5 studio-subpanel cursor-pointer hover:border-white/20 transition-colors">
+                <span class="flex items-center gap-3 text-stone-200">
+                  <input type="checkbox" class="feature-checkbox w-4 h-4 rounded accent-brand-cyan" data-cost="35" data-days="1" data-feature="SEO Avanzado en Google" />
+                  Configuración SEO Avanzada en Google
+                </span>
+                <span class="text-brand-cyan font-bold">+$35 USD <span class="text-[10px] text-stone-400 font-normal">(+1 día)</span></span>
+              </label>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Calculator Result Card -->
+        <div class="lg:col-span-5 studio-subpanel p-6 sm:p-8 flex flex-col justify-between bg-brand-surfaceElevated/60">
+          <div>
+            <span class="text-[11px] font-mono text-stone-400 uppercase tracking-wider block mb-1">Presupuesto Estimado</span>
+            <div class="text-4xl font-extrabold font-mono text-white mb-2">
+              $<span id="calc-total">90</span> <span class="text-sm font-normal text-stone-400 font-mono">USD</span>
+            </div>
+
+            <div class="inline-block text-xs font-mono text-brand-emerald bg-brand-emerald/10 px-2.5 py-1 rounded-md border border-brand-emerald/20 mb-6">
+              <i class="fa-regular fa-clock mr-1"></i> Plazo estimado: <span id="calc-time">3 a 5 días</span>
+            </div>
+
+            <div class="p-3.5 bg-brand-bg rounded-xl text-xs font-mono space-y-2 text-stone-300 mb-6 border border-white/5">
+              <div class="flex justify-between">
+                <span class="text-stone-400">Base:</span>
+                <span id="summary-base" class="text-white font-semibold">Landing Page</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-stone-400">Extras:</span>
+                <span id="summary-extras" class="text-brand-cyan truncate max-w-[170px] text-right">Ninguno</span>
+              </div>
+            </div>
+          </div>
+
+          <a id="calc-whatsapp-btn" 
+             href="https://wa.me/5492284379986?text=Hola%20Andr%C3%A9s,%20calcul%C3%A9%20un%20presupuesto%20para%20una%20Landing%20Page%20por%20$90%20USD" 
+             target="_blank" 
+             class="btn-whatsapp btn-spring w-full py-3.5 text-xs flex items-center justify-center gap-2 text-center font-bold">
+            <i class="fa-brands fa-whatsapp text-sm"></i>
+            <span>Iniciar Consulta con este Presupuesto</span>
+          </a>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ==================== NUEVO ROADMAP DE 4 FASES DE TRABAJO ==================== -->
+    <section id="roadmap" class="spotlight-card p-8 sm:p-12 border-brand-emerald/30">
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-white/10 pb-6 mb-8">
+        <div>
+          <span class="text-xs font-mono uppercase text-brand-emerald tracking-wider block mb-2 font-semibold">METODOLOGÍA DE INGENIERÍA</span>
+          <h2 class="text-3xl sm:text-4xl font-extrabold text-white">
+            Roadmap de Trabajo en <span class="text-brand-emerald whitespace-nowrap">4 Fases Claras</span>
+          </h2>
+        </div>
+        <p class="text-stone-400 text-xs sm:text-sm max-w-md text-pretty">
+          Proceso estructurado de punta a punta sin sorpresas: desde el primer boceto hasta la puesta en marcha en tu dominio.
+        </p>
+      </div>
+
+      <!-- 4 Phases Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        
+        <!-- Fase 1 -->
+        <div class="p-6 studio-subpanel flex flex-col justify-between border-brand-cyan/20 relative group hover:border-brand-cyan/50 transition-colors">
+          <div class="space-y-3">
+            <div class="flex items-center justify-between font-mono text-xs">
+              <span class="px-2 py-0.5 rounded bg-brand-cyan/10 text-brand-cyan font-bold">FASE 01</span>
+              <span class="text-stone-500">Día 1</span>
+            </div>
+            <h4 class="font-bold text-white text-base">Descubrimiento & Arquitectura</h4>
+            <p class="text-xs text-stone-400 leading-relaxed">
+              Definición de objetivos comerciales, propuesta de valor, estructura de secciones y flujo directo a WhatsApp.
+            </p>
+          </div>
+          <div class="pt-4 border-t border-white/5 mt-4 text-[11px] font-mono text-stone-300 flex items-center gap-1.5">
+            <i class="fa-solid fa-check text-brand-cyan"></i> Wireframe aprobado
+          </div>
+        </div>
+
+        <!-- Fase 2 -->
+        <div class="p-6 studio-subpanel flex flex-col justify-between border-indigo-500/20 relative group hover:border-indigo-500/50 transition-colors">
+          <div class="space-y-3">
+            <div class="flex items-center justify-between font-mono text-xs">
+              <span class="px-2 py-0.5 rounded bg-brand-indigo/10 text-brand-indigo font-bold">FASE 02</span>
+              <span class="text-stone-500">Días 2-3</span>
+            </div>
+            <h4 class="font-bold text-white text-base">Diseño Visual & UI Identidad</h4>
+            <p class="text-xs text-stone-400 leading-relaxed">
+              Maquetación con paleta oscura de alta gama, tipografías balanceadas, assets optimizados y microinteracciones de resorte.
+            </p>
+          </div>
+          <div class="pt-4 border-t border-white/5 mt-4 text-[11px] font-mono text-stone-300 flex items-center gap-1.5">
+            <i class="fa-solid fa-check text-brand-indigo"></i> Look & feel único
+          </div>
+        </div>
+
+        <!-- Fase 3 -->
+        <div class="p-6 studio-subpanel flex flex-col justify-between border-amber-500/20 relative group hover:border-amber-500/50 transition-colors">
+          <div class="space-y-3">
+            <div class="flex items-center justify-between font-mono text-xs">
+              <span class="px-2 py-0.5 rounded bg-brand-amber/10 text-brand-amber font-bold">FASE 03</span>
+              <span class="text-stone-500">Días 3-5</span>
+            </div>
+            <h4 class="font-bold text-white text-base">Código Frontend & WebGL</h4>
+            <p class="text-xs text-stone-400 leading-relaxed">
+              Programación limpia en Next.js / Tailwind, integración 3D WebGL opcional, pasarela de pago y compresión WebP.
+            </p>
+          </div>
+          <div class="pt-4 border-t border-white/5 mt-4 text-[11px] font-mono text-stone-300 flex items-center gap-1.5">
+            <i class="fa-solid fa-check text-brand-amber"></i> Carga &lt; 1s verificada
+          </div>
+        </div>
+
+        <!-- Fase 4 -->
+        <div class="p-6 studio-subpanel flex flex-col justify-between border-brand-emerald/30 relative group hover:border-brand-emerald/50 transition-colors bg-brand-surfaceElevated/40">
+          <div class="space-y-3">
+            <div class="flex items-center justify-between font-mono text-xs">
+              <span class="px-2 py-0.5 rounded bg-brand-emerald/10 text-brand-emerald font-bold">FASE 04</span>
+              <span class="text-stone-500">Entrega</span>
+            </div>
+            <h4 class="font-bold text-white text-base">QA, SEO & Deploy Final</h4>
+            <p class="text-xs text-stone-400 leading-relaxed">
+              Pruebas en celulares reales, configuración de dominio oficial con SSL, Google Search Console y entrega del 100% del código.
+            </p>
+          </div>
+          <div class="pt-4 border-t border-white/5 mt-4 text-[11px] font-mono text-brand-emerald flex items-center gap-1.5">
+            <i class="fa-solid fa-rocket"></i> Sitio 100% en vivo
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ==================== 7. TERMINAL DE INGENIERÍA & CÓDIGO ==================== -->
+    <section id="terminal" class="spotlight-card p-8 sm:p-12 border-brand-cyan/20">
+      <div class="max-w-3xl mb-8 relative z-10">
+        <span class="text-xs font-mono uppercase text-brand-cyan tracking-wider block mb-2 font-semibold">CÓDIGO DE PRODUCCIÓN</span>
+        <h2 class="text-3xl font-extrabold text-white mb-2">
+          Arquitectura Limpia & <span class="text-brand-cyan">Stack Tecnológico</span>
+        </h2>
+        <p class="text-stone-400 text-xs sm:text-sm">
+          Explora los estándares con los que construyo cada proyecto para garantizar durabilidad y velocidad.
+        </p>
+      </div>
+
+      <!-- Live Terminal -->
+      <div class="rounded-2xl bg-brand-bg border border-white/10 overflow-hidden relative z-10 shadow-2xl">
+        <div class="px-4 py-3 bg-brand-surface border-b border-white/10 flex flex-wrap items-center justify-between gap-3">
+          <div class="flex items-center gap-2">
+            <span class="w-3 h-3 rounded-full bg-brand-rose"></span>
+            <span class="w-3 h-3 rounded-full bg-brand-amber"></span>
+            <span class="w-3 h-3 rounded-full bg-brand-emerald"></span>
+            <span class="text-xs font-mono text-stone-400 ml-2">architecture.config.ts</span>
+          </div>
+
+          <div class="flex gap-2">
+            <button type="button" class="code-tab active text-xs font-mono px-3 py-1 rounded-lg bg-brand-surfaceElevated text-brand-cyan border border-white/10 btn-spring" data-tab="next">Next.js 15 & Tailwind</button>
+            <button type="button" class="code-tab text-xs font-mono px-3 py-1 rounded-lg text-stone-400 hover:text-white btn-spring" data-tab="three">Three.js Engine</button>
+            <button type="button" class="code-tab text-xs font-mono px-3 py-1 rounded-lg text-stone-400 hover:text-white btn-spring" data-tab="seo">SEO & Analytics</button>
+          </div>
+        </div>
+
+        <div class="p-6 font-mono text-xs text-stone-300 overflow-x-auto leading-relaxed bg-[#07090E]">
+          <pre id="code-snippet"><code><span class="text-brand-cyan">// Configuración de alto rendimiento sin constructores lentos</span>
+<span class="text-brand-indigo">export const</span> <span class="text-brand-amber">StudioProductionStack</span> = {
+  frontend: <span class="text-brand-emerald">'Next.js 15 (React 19 Server Components)'</span>,
+  styling: <span class="text-brand-emerald">'Tailwind CSS 3.4 (Zero-runtime overhead)'</span>,
+  benchmarks: {
+    coreWebVitals: <span class="text-brand-emerald">'Grade A (100/100)'</span>,
+    interactiveTime: <span class="text-brand-emerald">'< 0.8s en 4G Móvil'</span>
+  },
+  conversion: {
+    directWhatsAppChannel: <span class="text-brand-cyan">true</span>,
+    customCheckoutFlow: <span class="text-brand-cyan">true</span>
+  }
+};</code></pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== 8. FAQ ACCORDION ==================== -->
+    <section id="faq" class="space-y-6">
+      <div class="border-b border-white/10 pb-4">
+        <span class="text-xs font-mono uppercase text-brand-cyan tracking-wider block mb-1 font-semibold">PREGUNTAS FRECUENTES</span>
+        <h2 class="text-2xl sm:text-3xl font-extrabold text-white">Dudas Comunes & Metodología</h2>
+      </div>
+
+      <div class="space-y-3">
+        
+        <div class="faq-item spotlight-card p-5 cursor-pointer">
+          <div class="flex items-center justify-between gap-4">
+            <h4 class="font-bold text-white text-sm">¿Cómo es el proceso de pago y las entregas?</h4>
+            <i class="fa-solid fa-chevron-down faq-icon text-xs text-stone-400 transition-transform duration-300"></i>
+          </div>
+          <div class="faq-content">
+            <p class="text-xs text-stone-300 mt-3 pt-3 border-t border-white/5 leading-relaxed font-mono">
+              Se abona un <strong class="text-white font-semibold">anticipo del 50%</strong> para comenzar con el diseño y la programación, y el 50% restante una vez que el sitio está probado, aprobado y listo para desplegarse en tu dominio oficial.
+            </p>
+          </div>
+        </div>
+
+        <div class="faq-item spotlight-card p-5 cursor-pointer">
+          <div class="flex items-center justify-between gap-4">
+            <h4 class="font-bold text-white text-sm">¿El código y el dominio quedan 100% a mi nombre?</h4>
+            <i class="fa-solid fa-chevron-down faq-icon text-xs text-stone-400 transition-transform duration-300"></i>
+          </div>
+          <div class="faq-content">
+            <p class="text-xs text-stone-300 mt-3 pt-3 border-t border-white/5 leading-relaxed font-mono">
+              Sí, totalmente. No uso plataformas cautivas que te cobren alquiler mensual obligatorio. Eres <strong class="text-white font-semibold">dueño absoluto</strong> del código fuente, las credenciales y el hosting.
+            </p>
+          </div>
+        </div>
+
+        <div class="faq-item spotlight-card p-5 cursor-pointer">
+          <div class="flex items-center justify-between gap-4">
+            <h4 class="font-bold text-white text-sm">¿Qué necesito para empezar hoy mismo?</h4>
+            <i class="fa-solid fa-chevron-down faq-icon text-xs text-stone-400 transition-transform duration-300"></i>
+          </div>
+          <div class="faq-content">
+            <p class="text-xs text-stone-300 mt-3 pt-3 border-t border-white/5 leading-relaxed font-mono">
+              Solo necesitas <strong class="text-brand-emerald">enviarme un mensaje por WhatsApp</strong> contándome de qué trata tu negocio o idea. Te respondo con una propuesta clara y los pasos a seguir de inmediato.
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ==================== 9. FINAL CALL TO ACTION ==================== -->
+    <section id="contacto" class="spotlight-card p-8 sm:p-14 text-center border-brand-cyan/30 relative overflow-hidden">
+      <div class="max-w-2xl mx-auto space-y-6 relative z-10">
+        <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-brand-surfaceElevated to-brand-surfaceHover border border-white/10 mx-auto flex items-center justify-center text-brand-cyan text-xl shadow-lg">
+          <i class="fa-solid fa-paper-plane"></i>
+        </div>
+
+        <h2 class="text-3xl sm:text-4xl font-extrabold text-white">
+          ¿Tienes un proyecto o <span class="text-brand-cyan whitespace-nowrap">idea en mente?</span>
+        </h2>
+
+        <p class="text-stone-300 text-sm sm:text-base leading-relaxed">
+          Escríbeme para evaluar tu caso, responder preguntas técnicas y armar una propuesta a medida <strong class="text-white">sin rodeos ni demoras</strong>.
+        </p>
+
+        <div class="pt-2">
+          <a href="https://wa.me/5492284379986?text=Hola%20Andr%C3%A9s,%20quiero%20conversar%20sobre%20un%20proyecto%20web" 
+             target="_blank" 
+             class="btn-whatsapp btn-spring inline-flex items-center gap-3 px-8 py-4 text-sm font-bold shadow-2xl">
+            <i class="fa-brands fa-whatsapp text-xl"></i>
+            <span>Iniciar Conversación (+54 9 2284 379986)</span>
+          </a>
+        </div>
+
+        <div class="flex flex-wrap justify-center items-center gap-6 text-xs font-mono text-stone-400 pt-6 border-t border-white/5">
+          <span><i class="fa-solid fa-envelope text-brand-amber mr-1.5"></i> andresgomez311563@gmail.com</span>
+          <a href="https://github.com/mooch10" target="_blank" class="hover:text-white transition-colors"><i class="fa-brands fa-github text-brand-cyan mr-1.5"></i> github.com/mooch10</a>
+          <a href="https://mochiptos.vercel.app" target="_blank" class="hover:text-white transition-colors"><i class="fa-solid fa-globe text-brand-emerald mr-1.5"></i> mochiptos.vercel.app</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ==================== FOOTER ==================== -->
+  <footer class="border-t border-white/10 py-8 text-center text-xs text-stone-400 font-mono relative z-10 bg-brand-bg/80 backdrop-blur-md">
+    <div class="max-w-6xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div>
+        © 2026 Andrés Gómez — Studio de Ingeniería Frontend.
+      </div>
+      <div class="flex items-center gap-4 text-[11px]">
+        <span>Código artesanal sin plantillas.</span>
+        <span class="text-stone-600">•</span>
+        <a href="politicas.html" target="_blank" rel="noopener noreferrer" class="text-stone-300 hover:text-brand-cyan transition-colors flex items-center gap-1 group font-semibold">
+          <i class="fa-solid fa-shield-halved text-[10px] text-brand-cyan"></i>
+          <span>Políticas & Garantías</span>
+          <i class="fa-solid fa-arrow-up-right-from-square text-[9px] opacity-60 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all"></i>
+        </a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ==================== JAVASCRIPT MASTER ==================== -->
+  <script>
+    // Spotlight Cursor Dynamic Effect
+    document.querySelectorAll('.spotlight-card').forEach(card => {
+      card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        card.style.setProperty('--mouse-x', `${x}px`);
+        card.style.setProperty('--mouse-y', `${y}px`);
+      });
+    });
+
+    // Copiar Email con feedback visual
+    (function initCopyEmail() {
+      const btn = document.getElementById('copy-email-btn');
+      const icon = document.getElementById('copy-icon');
+      if (!btn) return;
+
+      btn.addEventListener('click', () => {
+        navigator.clipboard.writeText('andresgomez311563@gmail.com');
+        icon.className = 'fa-solid fa-check text-brand-emerald text-xs';
+        setTimeout(() => {
+          icon.className = 'fa-regular fa-copy text-xs';
+        }, 2000);
+      });
+    })();
+
+    // Comparador Benchmark Interactivo (Enriquecido y continuo)
+    (function initComparisonSlider() {
+      const slider = document.getElementById('comparison-slider');
+      const speedEl = document.getElementById('speed-metric');
+      const speedStatusEl = document.getElementById('speed-status');
+      const speedBar = document.getElementById('speed-indicator-bar');
+      const convEl = document.getElementById('conv-metric');
+      const convStatusEl = document.getElementById('conv-status');
+      const convBar = document.getElementById('conv-indicator-bar');
+      const weightEl = document.getElementById('weight-metric');
+      const weightStatusEl = document.getElementById('weight-status');
+      const weightBar = document.getElementById('weight-indicator-bar');
+      const seoRankEl = document.getElementById('seo-rank-impact');
+      const levelTextEl = document.getElementById('slider-level-text');
+      if (!slider) return;
+
+      function updateBenchmark() {
+        const val = parseInt(slider.value); // 0 to 100
+        
+        // 0 -> 5.8s, 100 -> 0.6s (Interpolación continua)
+        const seconds = (5.8 - (val / 100) * 5.2).toFixed(1);
+        speedEl.textContent = `${seconds}s`;
+        
+        // 0 -> 24%, 100 -> 98% (Interpolación continua)
+        const retention = Math.round(24 + (val / 100) * 74);
+        convEl.textContent = `${retention}%`;
+
+        // Peso: 0 -> 4.2 MB, 100 -> 95 KB
+        if (weightEl) {
+          if (val > 70) {
+            const kb = Math.round(450 - (val - 70) * (355 / 30));
+            weightEl.textContent = `${kb} KB`;
+          } else {
+            const mb = (4.2 - (val / 70) * 3.75).toFixed(1);
+            weightEl.textContent = `${mb} MB`;
+          }
+        }
+
+        // Update progress background bars
+        if (speedBar) speedBar.style.width = `${val}%`;
+        if (convBar) convBar.style.width = `${val}%`;
+        if (weightBar) weightBar.style.width = `${val}%`;
+        if (levelTextEl) levelTextEl.textContent = `Nivel de optimización: ${val}%`;
+
+        // Dynamic colors and status badges based on range
+        if (val >= 70) {
+          speedEl.className = 'text-xl font-bold font-mono text-brand-emerald';
+          speedStatusEl.textContent = 'Instantánea (<1s)';
+          speedStatusEl.className = 'text-[9px] text-brand-emerald font-sans';
+          convEl.className = 'text-xl font-bold font-mono text-brand-cyan';
+          convStatusEl.textContent = 'Máxima conversión';
+          convStatusEl.className = 'text-[9px] text-brand-cyan font-sans';
+          if (weightStatusEl) { weightStatusEl.textContent = 'Ultra ligera'; weightStatusEl.className = 'text-[9px] text-brand-indigo font-sans'; }
+          if (seoRankEl) { seoRankEl.textContent = 'Prioridad Top 1 en Google Móvil'; seoRankEl.className = 'text-brand-emerald font-semibold'; }
+        } else if (val >= 40) {
+          speedEl.className = 'text-xl font-bold font-mono text-brand-amber';
+          speedStatusEl.textContent = 'Promedio comercial';
+          speedStatusEl.className = 'text-[9px] text-brand-amber font-sans';
+          convEl.className = 'text-xl font-bold font-mono text-brand-amber';
+          convStatusEl.textContent = 'Retención moderada';
+          convStatusEl.className = 'text-[9px] text-brand-amber font-sans';
+          if (weightStatusEl) { weightStatusEl.textContent = 'Peso moderado'; weightStatusEl.className = 'text-[9px] text-brand-amber font-sans'; }
+          if (seoRankEl) { seoRankEl.textContent = 'Indexación estándar sin ventaja'; seoRankEl.className = 'text-brand-amber font-semibold'; }
+        } else {
+          speedEl.className = 'text-xl font-bold font-mono text-brand-rose';
+          speedStatusEl.textContent = 'Lenta (Fuga clientes)';
+          speedStatusEl.className = 'text-[9px] text-brand-rose font-sans';
+          convEl.className = 'text-xl font-bold font-mono text-brand-rose';
+          convStatusEl.textContent = 'Pérdida de ventas';
+          convStatusEl.className = 'text-[9px] text-brand-rose font-sans';
+          if (weightStatusEl) { weightStatusEl.textContent = 'Exceso de plugins'; weightStatusEl.className = 'text-[9px] text-brand-rose font-sans'; }
+          if (seoRankEl) { seoRankEl.textContent = 'Penalizado por Core Web Vitals'; seoRankEl.className = 'text-brand-rose font-semibold'; }
+        }
+      }
+
+      slider.addEventListener('input', updateBenchmark);
+      updateBenchmark(); // Initial trigger
+    })();
+
+    // Responsive Device Switcher Simulation
+    (function initDeviceSwitcher() {
+      const buttons = document.querySelectorAll('.device-btn');
+      const container = document.getElementById('device-screen-container');
+      const resBadge = document.getElementById('device-res-badge');
+      if (!buttons.length || !container) return;
+
+      const deviceConfigs = {
+        desktop: { maxWidth: '960px', res: '1440 × 900 px' },
+        tablet: { maxWidth: '640px', res: '768 × 1024 px' },
+        mobile: { maxWidth: '360px', res: '375 × 812 px' }
+      };
+
+      buttons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          buttons.forEach(b => {
+            b.classList.remove('bg-brand-surfaceElevated', 'border-brand-cyan', 'text-white', 'active');
+            b.classList.add('bg-brand-bg', 'border-white/5', 'text-stone-400');
+            const icon = b.querySelector('i');
+            if (icon) icon.className = icon.className.replace('text-brand-cyan', '');
+          });
+
+          btn.classList.add('bg-brand-surfaceElevated', 'border-brand-cyan', 'text-white', 'active');
+          btn.classList.remove('bg-brand-bg', 'border-white/5', 'text-stone-400');
+          const activeIcon = btn.querySelector('i');
+          if (activeIcon) activeIcon.classList.add('text-brand-cyan');
+
+          const device = btn.dataset.device;
+          const config = deviceConfigs[device] || deviceConfigs.desktop;
+          container.style.maxWidth = config.maxWidth;
+          if (resBadge) resBadge.textContent = config.res;
+        });
+      });
+    })();
+
+    // Terminal Code Tabs
+    (function initTerminalTabs() {
+      const tabs = document.querySelectorAll('.code-tab');
+      const snippet = document.getElementById('code-snippet');
+      if (!snippet) return;
+
+      const codeSnippets = {
+        next: `<span class="text-brand-cyan">// Configuración de alto rendimiento sin constructores lentos</span>
+<span class="text-brand-indigo">export const</span> <span class="text-brand-amber">StudioProductionStack</span> = {
+  frontend: <span class="text-brand-emerald">'Next.js 15 (React 19 Server Components)'</span>,
+  styling: <span class="text-brand-emerald">'Tailwind CSS 3.4 (Zero-runtime overhead)'</span>,
+  benchmarks: {
+    coreWebVitals: <span class="text-brand-emerald">'Grade A (100/100)'</span>,
+    interactiveTime: <span class="text-brand-emerald">'< 0.8s en 4G Móvil'</span>
+  },
+  conversion: {
+    directWhatsAppChannel: <span class="text-brand-cyan">true</span>,
+    customCheckoutFlow: <span class="text-brand-cyan">true</span>
+  }
+};`,
+        three: `<span class="text-brand-cyan">// Motor 3D WebGL con Three.js & Aceleración por Hardware</span>
+<span class="text-brand-indigo">import</span> * <span class="text-brand-indigo">as</span> THREE <span class="text-brand-indigo">from</span> <span class="text-brand-emerald">'three'</span>;
+
+<span class="text-brand-indigo">const</span> scene = <span class="text-brand-indigo">new</span> THREE.Scene();
+<span class="text-brand-indigo">const</span> mesh = <span class="text-brand-indigo">new</span> THREE.Mesh(geometry, customHologramShader);
+mesh.rotation.y += <span class="text-brand-amber">0.005</span>; <span class="text-stone-400">// 60 FPS Sedoso en móviles</span>
+renderer.render(scene, camera);`,
+        seo: `<span class="text-brand-cyan">// Metadatos OpenGraph y Microdatos Schema.org</span>
+<span class="text-brand-indigo">export const</span> metadata = {
+  title: <span class="text-brand-emerald">'Andrés Gómez — Software & Web Studio'</span>,
+  description: <span class="text-brand-emerald">'Desarrollo web a medida y alta conversión sin plantillas.'</span>,
+  openGraph: { type: <span class="text-brand-emerald">'website'</span>, locale: <span class="text-brand-emerald">'es_AR'</span> },
+  robots: { index: <span class="text-brand-cyan">true</span>, follow: <span class="text-brand-cyan">true</span> }
+};`
+      };
+
+      tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+          tabs.forEach(t => {
+            t.classList.remove('bg-brand-surfaceElevated', 'text-brand-cyan', 'border', 'border-white/10');
+            t.classList.add('text-stone-400');
+          });
+          tab.classList.add('bg-brand-surfaceElevated', 'text-brand-cyan', 'border', 'border-white/10');
+          tab.classList.remove('text-stone-400');
+
+          snippet.innerHTML = `<code>${codeSnippets[tab.dataset.tab]}</code>`;
+        });
+      });
+    })();
+
+    // Three.js 3D Interactive Lab
+    (function initProductLab() {
+      const container = document.getElementById('product-3d-canvas');
+      if (!container) return;
+
+      const scene = new THREE.Scene();
+      const camera = new THREE.PerspectiveCamera(50, container.clientWidth / container.clientHeight, 0.1, 100);
+      camera.position.z = 10;
+
+      const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+      renderer.setSize(container.clientWidth, container.clientHeight);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      container.appendChild(renderer.domElement);
+
+      const material = new THREE.MeshStandardMaterial({
+        color: 0x00F0FF,
+        wireframe: true,
+        roughness: 0.2,
+        metalness: 0.8
+      });
+
+      const light = new THREE.PointLight(0x00F0FF, 2, 50);
+      light.position.set(5, 5, 5);
+      scene.add(light);
+      scene.add(new THREE.AmbientLight(0xffffff, 0.6));
+
+      const geometries = {
+        torus: new THREE.TorusGeometry(3, 1, 16, 60),
+        cube: new THREE.BoxGeometry(4, 4, 4),
+        sphere: new THREE.IcosahedronGeometry(3.5, 2)
+      };
+
+      let currentMesh = new THREE.Mesh(geometries.torus, material);
+      scene.add(currentMesh);
+
+      let isDragging = false;
+      let previousMousePosition = { x: 0, y: 0 };
+
+      container.addEventListener('mousedown', (e) => {
+        isDragging = true;
+        previousMousePosition = { x: e.clientX, y: e.clientY };
+      });
+
+      window.addEventListener('mouseup', () => { isDragging = false; });
+
+      container.addEventListener('mousemove', (e) => {
+        if (!isDragging) return;
+        const deltaX = e.clientX - previousMousePosition.x;
+        const deltaY = e.clientY - previousMousePosition.y;
+        currentMesh.rotation.y += deltaX * 0.01;
+        currentMesh.rotation.x += deltaY * 0.01;
+        previousMousePosition = { x: e.clientX, y: e.clientY };
+      });
+
+      // Geometría Switcher Buttons
+      document.querySelectorAll('.geo-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.geo-btn').forEach(b => {
+            b.classList.remove('bg-brand-surfaceElevated', 'text-white', 'border-brand-cyan');
+            b.classList.add('bg-brand-bg', 'text-stone-400', 'border-white/5');
+          });
+          btn.classList.add('bg-brand-surfaceElevated', 'text-white', 'border-brand-cyan');
+          btn.classList.remove('bg-brand-bg', 'text-stone-400', 'border-white/5');
+
+          const geoKey = btn.dataset.geo;
+          scene.remove(currentMesh);
+          currentMesh = new THREE.Mesh(geometries[geoKey], material);
+          scene.add(currentMesh);
+        });
+      });
+
+      function animate() {
+        requestAnimationFrame(animate);
+        if (!isDragging) {
+          currentMesh.rotation.y += 0.004;
+          currentMesh.rotation.x += 0.002;
+        }
+        renderer.render(scene, camera);
+      }
+      animate();
+
+      window.addEventListener('resize', () => {
+        if (!container.clientWidth) return;
+        camera.aspect = container.clientWidth / container.clientHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(container.clientWidth, container.clientHeight);
+      });
+    })();
+
+    // Calculadora dinámica de presupuesto y plazo de entrega
+    (function initCalculator() {
+      const scopeButtons = document.querySelectorAll('.scope-btn');
+      const checkboxes = document.querySelectorAll('.feature-checkbox');
+      const calcTotalEl = document.getElementById('calc-total');
+      const calcTimeEl = document.getElementById('calc-time');
+      const summaryBaseEl = document.getElementById('summary-base');
+      const summaryExtrasEl = document.getElementById('summary-extras');
+      const whatsappBtn = document.getElementById('calc-whatsapp-btn');
+
+      let basePrice = 90;
+      let baseName = 'Landing Page';
+      let baseMinDays = 3;
+      let baseMaxDays = 5;
+
+      function updateCalculation() {
+        let total = basePrice;
+        let extraDays = 0;
+        let selectedFeatures = [];
+
+        checkboxes.forEach(cb => {
+          if (cb.checked) {
+            total += parseInt(cb.dataset.cost);
+            extraDays += parseInt(cb.dataset.days || 0);
+            selectedFeatures.push(cb.dataset.feature);
+          }
+        });
+
+        const totalMinDays = baseMinDays + extraDays;
+        const totalMaxDays = baseMaxDays + extraDays;
+        const timeString = `${totalMinDays} a ${totalMaxDays} días`;
+
+        calcTotalEl.textContent = total;
+        calcTimeEl.textContent = timeString;
+        summaryBaseEl.textContent = baseName;
+        summaryExtrasEl.textContent = selectedFeatures.length > 0 ? selectedFeatures.join(', ') : 'Ninguno';
+
+        const extrasText = selectedFeatures.length > 0 ? `%20con%20${encodeURIComponent(selectedFeatures.join(', '))}` : '';
+        const msg = `Hola%20Andr%C3%A9s,%20calcul%C3%A9%20un%20presupuesto%20para%20*${encodeURIComponent(baseName)}*${extrasText}%20por%20un%20total%20estimado%20de%20*$${total}%20USD*%20(Plazo:%20${encodeURIComponent(timeString)})`;
+        whatsappBtn.href = `https://wa.me/5492284379986?text=${msg}`;
+      }
+
+      scopeButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          scopeButtons.forEach(b => {
+            b.classList.remove('border-brand-cyan', 'text-white', 'active');
+            b.classList.add('text-stone-400');
+          });
+          btn.classList.add('border-brand-cyan', 'text-white', 'active');
+          btn.classList.remove('text-stone-400');
+
+          basePrice = parseInt(btn.dataset.base);
+          baseName = btn.dataset.name;
+          baseMinDays = parseInt(btn.dataset.minDays || 3);
+          baseMaxDays = parseInt(btn.dataset.maxDays || 5);
+          updateCalculation();
+        });
+      });
+
+      checkboxes.forEach(cb => {
+        cb.addEventListener('change', updateCalculation);
+      });
+
+      updateCalculation(); // Initial run
+    })();
+
+    // FAQs Acordeón
+    document.querySelectorAll('.faq-item').forEach(item => {
+      item.addEventListener('click', () => {
+        const isActive = item.classList.contains('active');
+        document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('active'));
+        if (!isActive) {
+          item.classList.add('active');
+        }
+      });
+    });
+
+    // Mobile Navigation Drawer Toggle
+    (function initMobileMenu() {
+      const toggleBtn = document.getElementById('mobile-menu-toggle');
+      const drawer = document.getElementById('mobile-menu-drawer');
+      const icon = document.getElementById('menu-icon');
+      const links = document.querySelectorAll('.mobile-nav-link');
+      if (!toggleBtn || !drawer) return;
+
+      toggleBtn.addEventListener('click', () => {
+        const isHidden = drawer.classList.contains('hidden');
+        if (isHidden) {
+          drawer.classList.remove('hidden');
+          if (icon) { icon.classList.remove('fa-bars'); icon.classList.add('fa-xmark'); }
+        } else {
+          drawer.classList.add('hidden');
+          if (icon) { icon.classList.remove('fa-xmark'); icon.classList.add('fa-bars'); }
+        }
+      });
+
+      links.forEach(link => {
+        link.addEventListener('click', () => {
+          drawer.classList.add('hidden');
+          if (icon) { icon.classList.remove('fa-xmark'); icon.classList.add('fa-bars'); }
+        });
+      });
+    })();
+
+    // Scroll-Reactive Floating Code Cards (Ciclo Infinito en Pantalla con Fade)
+    (function initScrollParallaxCode() {
+      const cards = document.querySelectorAll('.scroll-parallax');
+      if (!cards.length) return;
+
+      function updateCards() {
+        const scrollY = window.pageYOffset || document.documentElement.scrollTop;
+        const vh = window.innerHeight;
+
+        cards.forEach((card, index) => {
+          const speed = parseFloat(card.dataset.speed || 0.4);
+          // Altura de ciclo basada en la ventana
+          const cycleHeight = vh + 300;
+          
+          // Desplazamiento reactivo al scroll absoluto
+          let currentY = (scrollY * Math.abs(speed)) % cycleHeight;
+          
+          // Si la velocidad es positiva baja, si es negativa sube en loop
+          let yPos = speed > 0 ? (currentY - 150) : (vh - currentY + 150);
+
+          // Cálculo de opacidad suave para que no desaparezca de golpe en los bordes
+          const progress = (yPos + 100) / (vh + 200); // 0 a 1
+          let opacity = 0.5;
+          if (progress < 0.15) {
+            opacity = 0.5 * (progress / 0.15);
+          } else if (progress > 0.85) {
+            opacity = 0.5 * ((1 - progress) / 0.15);
+          }
+
+          card.style.transform = `translate3d(0, ${yPos}px, 0)`;
+          card.style.opacity = Math.max(0, Math.min(0.55, opacity));
+        });
+      }
+
+      window.addEventListener('scroll', updateCards, { passive: true });
+      window.addEventListener('resize', updateCards);
+      updateCards();
+    })();
+  </script>
+</body>
+</html>
