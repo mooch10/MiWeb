@@ -1,0 +1,56 @@
+# Andrés Gómez — Studio de Ingeniería Frontend & Desarrollo Web
+
+> Desarrollo web a medida con rendimiento extremo (< 1s de carga), arquitectura limpia y enfoque comercial directo. Sin plantillas genéricas de WordPress ni constructores lentos.
+
+## Información Principal
+- **Autor / Lead Engineer:** Andrés Gómez
+- **Ubicación:** Argentina • Servicios Remotos Globales
+- **Sitio Web Oficial:** https://portfolioandy.vercel.app
+- **Email:** andresgomez311563@gmail.com
+- **WhatsApp Oficial:** +54 9 2284 379986 (https://wa.me/5492284379986)
+- **GitHub:** https://github.com/mooch10
+
+---
+
+## Servicios & Soluciones
+
+### 1. Landing Page Comercial (Alta Conversión)
+- **Descripción:** Estructura de 1 página ultra veloz diseñada específicamente para campañas de anuncios (Meta Ads / Google Ads) y venta directa a WhatsApp.
+- **Plazo de Entrega:** 5 a 7 días hábiles.
+- **Inversión Base:** $90 USD (Rango estimado: $80 – $160 USD).
+- **Rendimiento:** Score 98+ Google Lighthouse, carga < 0.8s en redes móviles 4G.
+
+### 2. Sitio Web Corporativo (Multi-Sección)
+- **Descripción:** Sitio institucional multipágina o modular para empresas que buscan autoridad, diseño UI a medida y posicionamiento de marca.
+- **Plazo de Entrega:** 7 a 12 días hábiles.
+- **Inversión Base:** $220 USD (Rango estimado: $180 – $350 USD).
+
+### 3. E-Commerce & Catálogo Online
+- **Descripción:** Tienda digital con catálogo de productos, variantes de stock, integración de pasarelas de cobro online (Mercado Pago / tarjetas) o pedidos automatizados con carrito directo a WhatsApp.
+- **Plazo de Entrega:** 10 a 18 días hábiles.
+- **Inversión Base:** $380 USD (Rango estimado: $290 – $550 USD).
+
+### 4. Experiencias 3D & WebGL Inmersivas
+- **Descripción:** Modelos y visualizadores de producto interactivos en 360° con Three.js / WebGL acelerados por hardware a 60 FPS.
+- **Plazo de Entrega:** 12 a 20 días hábiles.
+- **Inversión Base:** +$300 USD extra opcional (Rango completo: $380 – $750 USD).
+
+### 5. Rediseño & Optimización de Rendimiento
+- **Descripción:** Modernización visual de sitios desactualizados, corrección de tiempos de carga lentos, migración de hosting y soporte continuo.
+- **Inversión:** $60 – $140 USD.
+
+---
+
+## Garantías & Políticas de Servicio
+- **100% Propiedad del Cliente:** El cliente es dueño absoluto del código fuente, credenciales de hosting y dominio propio sin mensualidades cautivas obligatorias.
+- **Garantía Técnica:** Sitios entregados con Score > 90 en Google PageSpeed y 30 días de soporte post-lanzamiento sin cargo adicional.
+- **Esquema de Pago:** 50% anticipo al iniciar tras aprobar wireframe / 50% saldo contra entrega final probada y aprobada.
+- **Documento Legal Completo:** https://portfolioandy.vercel.app/politicas.html
+
+---
+
+## Stack Tecnológico
+- **Frontend:** Next.js 15, React 19 Server Components, Tailwind CSS, TypeScript.
+- **Gráficos & 3D:** Three.js, WebGL, GLSL Shaders.
+- **Infraestructura:** Vercel Edge Network, Cloudflare CDN, SSL automático.
+- **Pasarelas & APIs:** Mercado Pago SDK, Webhooks seguros, WhatsApp API integration.
