@@ -1,9 +1,9 @@
-# Andrés Gómez — Studio de Ingeniería Frontend & Desarrollo Web
+# Andrés Gómez Pietrobono — Studio de Ingeniería Frontend & Desarrollo Web
 
 > Desarrollo web a medida con rendimiento extremo (< 1s de carga), arquitectura limpia y enfoque comercial directo. Sin plantillas genéricas de WordPress ni constructores lentos.
 
 ## Información Principal
-- **Autor / Lead Engineer:** Andrés Gómez
+- **Autor / Lead Engineer:** Andrés Gómez Pietrobono
 - **Ubicación:** Argentina • Servicios Remotos Globales
 - **Sitio Web Oficial:** https://portfolioandy.vercel.app
 - **Email:** andresgomez311563@gmail.com
