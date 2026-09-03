@@ -314,7 +314,7 @@
   <div class="ambient-code-widgets pointer-events-none fixed inset-0 z-0 overflow-hidden">
     
     <!-- Viñeta 1 (Hero / Lateral Derecho) -->
-    <div class="code-floating-card scroll-parallax hidden md:block w-64" data-speed="0.35" style="right: 2%;">
+    <div class="code-floating-card scroll-parallax hidden md:block w-64" data-speed="0.35" style="right: 2.5%;">
       <div class="flex items-center gap-2 mb-2 pb-1.5 border-b border-white/10 text-[10px] text-stone-400">
         <span class="w-2 h-2 rounded-full bg-brand-rose"></span>
         <span class="w-2 h-2 rounded-full bg-brand-amber"></span>
@@ -328,7 +328,7 @@
     </div>
 
     <!-- Viñeta 2 (Servicios / Lateral Izquierdo) -->
-    <div class="code-floating-card scroll-parallax hidden md:block w-64" data-speed="-0.32" style="left: 2%;">
+    <div class="code-floating-card scroll-parallax hidden md:block w-64" data-speed="-0.35" style="left: 2.5%;">
       <div class="flex items-center gap-2 mb-2 pb-1.5 border-b border-white/10 text-[10px] text-stone-400">
         <span class="text-brand-cyan"><i class="fa-brands fa-react"></i></span>
         <span class="text-stone-300 font-bold ml-1">useConversion.tsx</span>
@@ -340,7 +340,7 @@
     </div>
 
     <!-- Viñeta 3 (Portfolio & Multi-Device / Lateral Derecho) -->
-    <div class="code-floating-card scroll-parallax hidden lg:block w-64" data-speed="0.4" style="right: 2%;">
+    <div class="code-floating-card scroll-parallax hidden lg:block w-64" data-speed="0.35" style="right: 2.5%;">
       <div class="flex items-center gap-2 mb-2 pb-1.5 border-b border-white/10 text-[10px] text-stone-400">
         <span class="text-brand-emerald"><i class="fa-solid fa-cube"></i></span>
         <span class="text-stone-300 font-bold ml-1">webgl.render.js</span>
@@ -352,7 +352,7 @@
     </div>
 
     <!-- Viñeta 4 (Benchmark & Cotizador / Lateral Izquierdo) -->
-    <div class="code-floating-card scroll-parallax hidden lg:block w-64" data-speed="-0.38" style="left: 2%;">
+    <div class="code-floating-card scroll-parallax hidden lg:block w-64" data-speed="-0.35" style="left: 2.5%;">
       <div class="flex items-center gap-2 mb-2 pb-1.5 border-b border-white/10 text-[10px] text-stone-400">
         <span class="text-brand-amber"><i class="fa-solid fa-bolt"></i></span>
         <span class="text-stone-300 font-bold ml-1">performance.test.ts</span>
@@ -1759,7 +1759,7 @@ renderer.render(scene, camera);`,
       });
     })();
 
-    // Scroll-Reactive Floating Code Cards (Ciclo Infinito en Pantalla con Fade)
+    // Scroll-Reactive Floating Code Cards (Ciclo continuo y armónico sin colisión entre tarjetas)
     (function initScrollParallaxCode() {
       const cards = document.querySelectorAll('.scroll-parallax');
       if (!cards.length) return;
@@ -1767,25 +1767,31 @@ renderer.render(scene, camera);`,
       function updateCards() {
         const scrollY = window.pageYOffset || document.documentElement.scrollTop;
         const vh = window.innerHeight;
+        // Distancia total del ciclo del viewport con margen de entrada y salida
+        const cardEstimatedHeight = 180;
+        const cycleHeight = vh + cardEstimatedHeight * 2;
 
         cards.forEach((card, index) => {
-          const speed = parseFloat(card.dataset.speed || 0.4);
-          // Altura de ciclo basada en la ventana
-          const cycleHeight = vh + 300;
+          const speed = parseFloat(card.dataset.speed || 0.35);
+          // Separación de fase por lateral: Viñeta 1 y 3 (derecha), Viñeta 2 y 4 (izquierda)
+          // Asignar medio ciclo (cycleHeight / 2) de desfase a la segunda tarjeta de cada lado
+          const phaseOffset = (index >= 2) ? (cycleHeight / 2) : 0;
           
-          // Desplazamiento reactivo al scroll absoluto
-          let currentY = (scrollY * Math.abs(speed)) % cycleHeight;
+          // Movimiento reactivo sincronizado
+          const rawY = ((scrollY * Math.abs(speed)) + phaseOffset) % cycleHeight;
           
-          // Si la velocidad es positiva baja, si es negativa sube en loop
-          let yPos = speed > 0 ? (currentY - 150) : (vh - currentY + 150);
+          // Posición Y en pantalla (de arriba hacia abajo o de abajo hacia arriba suavemente)
+          let yPos = speed > 0 
+            ? (rawY - cardEstimatedHeight) 
+            : (vh + cardEstimatedHeight - rawY);
 
-          // Cálculo de opacidad suave para que no desaparezca de golpe en los bordes
-          const progress = (yPos + 100) / (vh + 200); // 0 a 1
+          // Desvanecimiento sutil al entrar y salir del viewport para evitar cortes abruptos
+          const progress = (yPos + cardEstimatedHeight) / (vh + cardEstimatedHeight * 2);
           let opacity = 0.5;
-          if (progress < 0.15) {
-            opacity = 0.5 * (progress / 0.15);
-          } else if (progress > 0.85) {
-            opacity = 0.5 * ((1 - progress) / 0.15);
+          if (progress < 0.12) {
+            opacity = 0.5 * Math.max(0, progress / 0.12);
+          } else if (progress > 0.88) {
+            opacity = 0.5 * Math.max(0, (1 - progress) / 0.12);
           }
 
           card.style.transform = `translate3d(0, ${yPos}px, 0)`;
